@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/tigerxy/cba-collector/issues"
   },
-  "homepage": "https://github.com/tigerxy/cba-collector#readme"
+  "homepage": "https://github.com/tigerxy/cba-collector#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
