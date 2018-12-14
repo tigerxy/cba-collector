@@ -1,7 +1,14 @@
-var express = require('express')
-var app = express()
+var http = require('http');
+var express = require('express');
+var app = express();
 
-// respond with "hello world" when a GET request is made to the homepage
-app.get('/', function (req, res) {
-  res.send('hello world')
-})
+app.set('view engine', 'jade');
+app.set('views', './views');
+
+app.get('/', function(req, res) {
+  res.render('index', {title: 'Welcome', message: 'Hello ExpressJS!'});
+});
+
+app.listen(80);
+console.log('Running Express...');
+
