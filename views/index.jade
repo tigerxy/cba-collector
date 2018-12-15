@@ -1,12 +1,13 @@
 extends layout
 
 block content
-  .jumbotron
-    h1= title
-    p Willkommen zur #{title}. Bitte Token eingeben.
-    p: form.form-inline(action="/", method="post")
-      input.form-control(type="text",name="token")
-      button.btn.btn-primary(type="submit",value="Senden") Senden
+  div.container-fluid
+    .jumbotron
+      h1= title
+      p Willkommen zur #{title}. Bitte Token eingeben.
+      p: form.form-inline(action="/", method="post")
+        input.form-control(type="text",name="token")
+        button.btn.btn-primary(type="submit",value="Senden") Senden
   
   
   
