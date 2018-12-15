@@ -14,7 +14,7 @@ block head
         height: 100%;
       }
       .fixed-bottom {
-        margin: 15px;
+        margin: 25px 15px;
       }
 
 block content
@@ -27,13 +27,13 @@ block content
   #map
 
   div.fixed-bottom
-    button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModal') Haufen eintragen
+    button.btn.btn-primary.btn-lg.btn-block(type='button', data-toggle='modal', data-target='#exampleModal') Haufen eintragen
 
   #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
     .modal-dialog(role='document')
       .modal-content
         .modal-header
-          h5#exampleModalLabel.modal-title Haufen
+          h5#exampleModalLabel.modal-title Haufen eintragen
           |         
           button.close(type='button', data-dismiss='modal', aria-label='Close')
             span(aria-hidden='true') &times;
