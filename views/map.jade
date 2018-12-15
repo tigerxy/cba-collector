@@ -4,8 +4,31 @@ block content
   h1= title
   p Dein Token ist: #{token}
 
-  button(onclick="getLocation()") Read
+  button.btn.btn-primary(onclick="getLocation()") Read GPS
   #demo
+
+  button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModal') Launch demo modal
+
+  #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#exampleModalLabel.modal-title Haufen
+          |         
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') &times;
+        |       
+        .modal-body
+          div.btn-group(role='group')
+            button.btn.btn-secondary 木
+            button.btn.btn-secondary 林
+            button.btn.btn-secondary 森
+        |       
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Abbrechen
+          |         
+          button.btn.btn-primary(type='button') Hinzufügen
+
 
   script(type='text/javascript').
     var x = document.getElementById("demo");
