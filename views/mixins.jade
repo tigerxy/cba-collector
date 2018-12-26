@@ -21,5 +21,7 @@ mixin radio-button(id,active)
 
 mixin alert(style)
     div(class=['alert','alert-'+style,'alert-dismissible','fade','show'],role='alert')
-        button(type='button',data-dismiss='alert',aria-label='close')
+        strong
+            block
+        button.close(type='button',data-dismiss='alert',aria-label='close')
             span(aria-hidden='true') &times;

@@ -106,6 +106,4 @@ map.locate({ watch: true, enableHighAccuracy: true });
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
 
-
-
 $('#add').on("click", gpsPosition, onAddTrees);
