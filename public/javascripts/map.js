@@ -28,7 +28,7 @@ function onAddTrees(event) {
         lon: event.data.getLatLng().lng,
         lat: event.data.getLatLng().lat,
         accuracy: event.data.getRadius(),
-        token: "asdf"
+        token: token
     })
         .done(function () {
             alert('success', 'Haufen erfolgreich hinzugefügt.');
