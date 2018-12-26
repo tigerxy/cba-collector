@@ -41,8 +41,8 @@ function onAddTrees(event) {
         });
 }
 
-function loadData(geojson, time = false) {
-    $.getJSON("/api?time=" + (time ? Date.now() : 0), function () { })
+function loadData(geojson, time = 0) {
+    $.getJSON("/api?time=" + time, function () { })
         .done(function (data) {
             console.log(data);
             data.length > 0 ? geojson.addData(data) : 0;
@@ -51,8 +51,9 @@ function loadData(geojson, time = false) {
             console.error(err.message);
         })
         .always(function () {
+            time = Date.now();
             setTimeout(function () {
-                loadData(geojson, true)
+                loadData(geojson, time)
             }, 3000);
         });
 }
