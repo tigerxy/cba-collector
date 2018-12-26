@@ -14,10 +14,10 @@ function showPosition(position) {
 
 function alert(type, message) {
     var html = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' +
-    '   <strong>' + message + '</strong>' +
-    '       <button class="close" type="button" data-dismiss="alert" aria-label="Close">' +
-    '           <span aria-hidden="true">&times;</span>' +
-    '       </button>'
+        '   <strong>' + message + '</strong>' +
+        '       <button class="close" type="button" data-dismiss="alert" aria-label="Close">' +
+        '           <span aria-hidden="true">&times;</span>' +
+        '       </button>'
     '   </div>';
     $('#alert').append(html);
 }
@@ -41,6 +41,22 @@ function onAddTrees(event) {
         });
 }
 
+function onLoadData(geojson, time) {
+    setTimeout(function () {
+        $.getJSON("/api?time=" + (time ? Date.now() : 0), function () { })
+            .done(function (data) {
+                console.log(data);
+                data.length > 0 ? geojson.addData(data) : 0;
+            })
+            .fail(function (err) {
+                console.error(err.message);
+            })
+            .always(function () {
+                onLoadData(geojson, true);
+            });
+    }, 30000);
+}
+
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
 
@@ -51,7 +67,7 @@ function onLocationFound(e) {
     //console.log(e.latlng);
     gpsPosition.setLatLng(e.latlng);
     gpsPosition.setRadius(radius);
-    gpsPosition.addTo(map);
+    //gpsPosition.addTo(map);
 }
 
 function onLocationError(e) {
@@ -64,32 +80,31 @@ var map = L.map('map').fitWorld();
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     id: 'mapbox.streets'
 }).addTo(map);
 
-//TODO: Ajax load geojson from api
-$.getJSON("/api", function () { })
-.done(function (data) {
-    console.log(data);
-    L.geoJSON(data, {
-        style: function (feature) {
-            return { color: feature.properties.color };
-        }
-    }).bindPopup(function (layer) {
-        return layer.feature.properties.description;
-    }).addTo(map);
-})
-.fail(function (err) {
-    console.error(err.message);
-});
 
 var gpsPosition = L.circle([0, 0]);
+gpsPosition.addTo(map);
 
+var treePosition = L.geoJSON([], {
+    style: function (feature) {
+        return { color: feature.properties.color };
+    }
+});
+treePosition.bindPopup(function (layer) {
+    return layer.feature.properties.description;
+});
+treePosition.addTo(map);
+
+onLoadData(treePosition, false);
 
 map.locate({ watch: true, enableHighAccuracy: true });
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
+
+
 
 $('#add').on("click", gpsPosition, onAddTrees);

@@ -6,6 +6,7 @@ var treeSpotSchema = new mongoose.Schema({
         coordinates: Array
     },
     properties: {
+        created: Date,
         size: Number,
         creator: String,
         pickedup: { type: Boolean, default: false },
