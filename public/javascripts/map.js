@@ -45,9 +45,9 @@ function loadAreas(geojson) {
     $.getJSON("/api/area", function () { })
         .done(function (data) {
             console.log(data);
-            var geo = L.geoJSON(data);
+            var geo = L.geoJSON(data, { style: { color: 'red', fill: false } });
             geo.addTo(map);
-            map.fitBounds(geo.getBounds(), { padding: [20, 20] });
+            map.fitBounds(geo.getBounds());
         })
         .fail(function (err) {
             console.error(err.message);
