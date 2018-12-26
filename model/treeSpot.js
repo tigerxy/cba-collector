@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 exports.add = function add(creator, size, coordinates, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
     var spot = new TreeSpot;
+    spot.properties.created = Date.now();
     spot.geometry.coordinates = coordinates;
     spot.properties.creator = creator;
     spot.properties.size = size;

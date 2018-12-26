@@ -95,7 +95,7 @@ var TreeIcon = L.Icon.extend({
     options: {
         iconSize: [30, 35],
         iconAnchor: [15, 35],
-        popupAnchor: [-3, -76]
+        popupAnchor: [0, -37]
     }
 });
 
