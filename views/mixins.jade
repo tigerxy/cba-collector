@@ -18,3 +18,8 @@ mixin radio-button(id,active)
     label(class=['btn','btn-secondary',isactive?'active':''])
         input(type="radio",name="option",autocomplete="off",id=id,checked=isactive)
         block
+
+mixin alert(style)
+    div(class=['alert','alert-'+style,'alert-dismissible','fade','show'],role='alert')
+        button(type='button',data-dismiss='alert',aria-label='close')
+            span(aria-hidden='true') &times;

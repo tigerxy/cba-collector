@@ -9,13 +9,6 @@ block head
         margin: 0px;
         height: 100%;
       }
-      #map {
-        width: 100%;
-        height: 100%;
-      }
-      .fixed-bottom {
-        margin: 25px 15px;
-      }
 
 block content
   //h1= title
@@ -26,14 +19,17 @@ block content
 
   #map
 
-  div.fixed-bottom
-    button.btn.btn-primary.btn-lg.btn-block(type='button', data-toggle='modal', data-target='#exampleModal') Haufen eintragen
+  .fixed-top
+    #alert
 
-  #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+  .fixed-bottom
+    button.btn.btn-primary.btn-lg.btn-block(type='button', data-toggle='modal', data-target='#addModal') Haufen eintragen
+
+  #addModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addModalLabel', aria-hidden='true')
     .modal-dialog(role='document')
       .modal-content
         .modal-header
-          h5#exampleModalLabel.modal-title Haufen eintragen
+          h5#addModalLabel.modal-title Haufen eintragen
           |         
           button.close(type='button', data-dismiss='modal', aria-label='Close')
             span(aria-hidden='true') &times;
@@ -50,48 +46,7 @@ block content
         .modal-footer
           button.btn.btn-secondary(type='button', data-dismiss='modal') Abbrechen
           |         
-          button.btn.btn-primary(type='button') Hinzufügen
+          button#add.btn.btn-primary(type='button') Hinzufügen
 
 
-  script(type='text/javascript').
-    var x = document.getElementById("demo");
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(showPosition);
-      } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-    }
-    
-    function showPosition(position) {
-      x.innerHTML = "Latitude: " + position.coords.latitude +
-      "<br>Longitude: " + position.coords.longitude;
-    }
-
-    var map = L.map('map').fitWorld();
-
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-      maxZoom: 18,
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      id: 'mapbox.streets'
-    }).addTo(map);
-
-    function onLocationFound(e) {
-      var radius = e.accuracy / 2;
-
-      L.marker(e.latlng).addTo(map)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-      L.circle(e.latlng, radius).addTo(map);
-    }
-
-    function onLocationError(e) {
-      alert(e.message);
-    }
-
-    map.on('locationfound', onLocationFound);
-    map.on('locationerror', onLocationError);
-
-    map.locate({setView: true, maxZoom: 16});
+  script(src='/javascripts/map.js')
