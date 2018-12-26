@@ -56,7 +56,7 @@ function onLocationFound(e) {
 
 function onLocationError(e) {
     console.error(e.message);
-    alert('danger', 'Position konnte nicht ermittelt werden.');
+    //alert('danger', 'Position konnte nicht ermittelt werden.');
 }
 
 var map = L.map('map').fitWorld();
@@ -91,7 +91,5 @@ var gpsPosition = L.circle([0, 0]);
 map.locate({ watch: true, enableHighAccuracy: true });
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
-
-map.locate({ setView: true, maxZoom: 16 });
 
 $('#add').on("click", gpsPosition, onAddTrees);
