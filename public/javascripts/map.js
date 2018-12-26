@@ -41,20 +41,20 @@ function onAddTrees(event) {
         });
 }
 
-function onLoadData(geojson, time) {
-    setTimeout(function () {
-        $.getJSON("/api?time=" + (time ? Date.now() : 0), function () { })
-            .done(function (data) {
-                console.log(data);
-                data.length > 0 ? geojson.addData(data) : 0;
-            })
-            .fail(function (err) {
-                console.error(err.message);
-            })
-            .always(function () {
-                onLoadData(geojson, true);
-            });
-    }, 30000);
+function loadData(geojson, time = false) {
+    $.getJSON("/api?time=" + (time ? Date.now() : 0), function () { })
+        .done(function (data) {
+            console.log(data);
+            data.length > 0 ? geojson.addData(data) : 0;
+        })
+        .fail(function (err) {
+            console.error(err.message);
+        })
+        .always(function () {
+            setTimeout(function () {
+                loadData(geojson, true)
+            }, 3000);
+        });
 }
 
 function onLocationFound(e) {
@@ -99,7 +99,7 @@ treePosition.bindPopup(function (layer) {
 });
 treePosition.addTo(map);
 
-onLoadData(treePosition, false);
+loadData(treePosition);
 
 map.locate({ watch: true, enableHighAccuracy: true });
 map.on('locationfound', onLocationFound);
