@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 exports.add = function add(creator, size, coordinates, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
     var spot = new TreeSpot;
-    spot.properties.created = Date.now();
     spot.geometry.coordinates = coordinates;
     spot.properties.creator = creator;
     spot.properties.size = size;
@@ -16,10 +15,9 @@ exports.add = function add(creator, size, coordinates, callback) {
     });
 }; // end exports.add
 
-exports.list = function list(creator, time, callback) {
+exports.list = function list(time, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
     TreeSpot.find({
-        'properties.creator': creator,
         'properties.created': { $gte: time }
     }, function (err, treespots) {
         if (err) {

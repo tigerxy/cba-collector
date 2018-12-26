@@ -23,7 +23,7 @@ function alert(type, message) {
 }
 
 function onAddTrees(event) {
-    $.post("/api", {
+    $.post("/api/tree", {
         size: 1,
         lon: event.data.getLatLng().lng,
         lat: event.data.getLatLng().lat,
@@ -41,8 +41,21 @@ function onAddTrees(event) {
         });
 }
 
-function loadData(geojson, time = 0) {
-    $.getJSON("/api?time=" + time, function () { })
+function loadAreas(geojson) {
+    $.getJSON("/api/area", function () { })
+        .done(function (data) {
+            console.log(data);
+            L.geoJSON(data).addTo(map);
+        })
+        .fail(function (err) {
+            console.error(err.message);
+        })
+        .always(function () {
+        });
+}
+
+function loadTrees(geojson, time = 0) {
+    $.getJSON("/api/tree?time=" + time, function () { })
         .done(function (data) {
             console.log(data);
             data.length > 0 ? geojson.addData(data) : 0;
@@ -53,7 +66,7 @@ function loadData(geojson, time = 0) {
         .always(function () {
             time = Date.now();
             setTimeout(function () {
-                loadData(geojson, time)
+                loadTrees(geojson, time)
             }, 3000);
         });
 }
@@ -100,7 +113,8 @@ treePosition.bindPopup(function (layer) {
 });
 treePosition.addTo(map);
 
-loadData(treePosition);
+loadAreas(treePosition);
+loadTrees(treePosition);
 
 map.locate({ watch: true, enableHighAccuracy: true });
 map.on('locationfound', onLocationFound);
