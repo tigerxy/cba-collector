@@ -87,7 +87,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
 }).addTo(map);
 
 
-var gpsPosition = L.circle([0, 0]);
+var gpsPosition = L.circle([51, 9], { radius: 1500000 });
 gpsPosition.addTo(map);
 
 var treePosition = L.geoJSON([], {
