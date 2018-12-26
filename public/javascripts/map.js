@@ -91,6 +91,19 @@ function onLocationError(e) {
     //alert('danger', 'Position konnte nicht ermittelt werden.');
 }
 
+var TreeIcon = L.Icon.extend({
+    options: {
+        iconSize: [30, 35],
+        iconAnchor: [15, 35],
+        popupAnchor: [-3, -76]
+    }
+});
+
+var greenIcon = new TreeIcon({ iconUrl: '/images/tree_green.png' }),
+    yellowIcon = new TreeIcon({ iconUrl: '/images/tree_yellow.png' }),
+    redIcon = new TreeIcon({ iconUrl: '/images/tree_red.png' }),
+    greyIcon = new TreeIcon({ iconUrl: '/images/tree_grey.png' });
+
 var map = L.map('map').fitWorld();
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -106,8 +119,8 @@ var gpsPosition = L.circle([51, 9], { radius: 1500000 });
 gpsPosition.addTo(map);
 
 var treePosition = L.geoJSON([], {
-    style: function (feature) {
-        return { color: feature.properties.color };
+    pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, { icon: greenIcon });
     }
 });
 treePosition.bindPopup(function (layer) {
@@ -117,6 +130,7 @@ treePosition.addTo(map);
 
 loadAreas(treePosition);
 loadTrees(treePosition);
+
 
 map.locate({ watch: true, enableHighAccuracy: true });
 map.on('locationfound', onLocationFound);
