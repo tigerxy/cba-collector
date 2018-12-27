@@ -31,4 +31,18 @@ router.post('/tree', function (req, res, next) {
     });
 });
 
+router.ws('/ws', function (ws, req) {
+    //console.log('test');
+    /*ws.on('open', function (ws) {
+        console.log('connected');
+        //TreeSpot.watch().on('change', data => ws.send(data));
+    });
+    ws.on('message', function (ws, msg) {
+        console.log(Date.now().toLocaleString(), msg);
+    });*/
+    ws.on('message', function (msg) {
+        ws.send(msg);
+    });
+});
+
 module.exports = router;

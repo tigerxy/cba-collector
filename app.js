@@ -6,12 +6,14 @@ var logger = require('morgan');
 
 var db = require('./model/db');
 
-var indexRouter = require('./routes/index');
-var tokenRouter = require('./routes/token');
-var apiRouter = require('./routes/api');
 
 var app = express();
 
+var expressWs = require('express-ws')(app);
+
+var indexRouter = require('./routes/index');
+var tokenRouter = require('./routes/token');
+var apiRouter = require('./routes/api');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

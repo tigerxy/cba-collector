@@ -25,5 +25,6 @@ var treeSpotSchema = new mongoose.Schema({
     }
 });
 mongoose.model('Area', areaSchema);
-mongoose.model('TreeSpot', treeSpotSchema);
+var tree = mongoose.model('TreeSpot', treeSpotSchema);
 mongoose.connect('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba');  
+tree.watch().on('change', data => console.log(new Date(), data));
