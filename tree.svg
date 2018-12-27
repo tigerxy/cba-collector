@@ -13,7 +13,10 @@
    viewBox="0 0 15.703605 18.722272"
    width="59.352203"
    sodipodi:docname="tree.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/roland/cba-collector/public/images/tree_green.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
   <metadata
      id="metadata23">
     <rdf:RDF>
@@ -22,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -44,7 +47,7 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="9.1970406"
-     inkscape:cx="44.321141"
+     inkscape:cx="-11.457671"
      inkscape:cy="20.335711"
      inkscape:window-x="134"
      inkscape:window-y="55"
@@ -112,7 +115,7 @@
      d="m 7.2707074,18.397619 -0.03542,-10.7903704 1.165022,-1.1e-4 0.06797,10.7812504 z" />
   <path
      inkscape:connector-curvature="0"
-     style="opacity:1;fill:#c8beb7;fill-opacity:1;stroke:#241f1c;stroke-width:1.0182327;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     style="opacity:1;fill:#aade87;fill-opacity:1;stroke:#241f1c;stroke-width:1.0182327;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
      id="path6990"
      d="M 14.920465,12.760053 C 13.651649,14.953303 10.38461,12.92196 7.8507918,12.919756 5.3169732,12.917551 2.0464076,14.943208 0.78140557,12.747754 -0.48359497,10.552302 2.909118,8.7386335 4.1779361,6.5453864 5.4467528,4.352136 5.3277693,0.50691633 7.8615865,0.50911719 c 2.5338145,0.002206 2.4081425,3.84721261 3.6731405,6.04266871 1.265001,2.1954513 4.654555,4.0150161 3.385738,6.2082671 z"
      inkscape:export-filename="/home/roland/cba-collector/public/images/tree_grey.png"
