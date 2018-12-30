@@ -22,6 +22,18 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
+ * Enables Websocket
+ */
+
+var ex = require('express-ws')(app, server);
+app.addListener('db', function (data) {
+  ex.getWss().clients.forEach(function (c) {
+    console.log('emit server.js');
+    c.send(JSON.stringify(data));
+  });
+});
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 

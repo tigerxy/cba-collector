@@ -42,3 +42,8 @@ exports.listAll = function listAll(callback) {
             }
         });
 }; // end exports.list
+
+exports.addWebsocket = function addWebsocket(callback) {
+    var TreeSpot = mongoose.model('TreeSpot');
+    TreeSpot.watch().on('change', data => callback(data));
+}

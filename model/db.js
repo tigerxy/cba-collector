@@ -1,3 +1,4 @@
+var events = require('events');
 var mongoose = require('mongoose');
 var areaSchema = new mongoose.Schema({
     type: { type: String, default: "Feature" },
@@ -26,5 +27,11 @@ var treeSpotSchema = new mongoose.Schema({
 });
 mongoose.model('Area', areaSchema);
 var tree = mongoose.model('TreeSpot', treeSpotSchema);
-mongoose.connect('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba');  
-tree.watch().on('change', data => console.log(new Date(), data));
+mongoose.connect('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba');
+
+var e = new events.EventEmitter();
+tree.watch().on('change', function (data) {
+    console.log('emit db.js');
+    e.emit('db',[data]);
+});
+module.exports = e;
