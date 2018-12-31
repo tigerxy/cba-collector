@@ -56,13 +56,20 @@ router.post('/tree', getUser, function (req, res, next) {
     var point = [Number(req.body.lon), Number(req.body.lat)];
 
     TreeSpot.add(req.user, size, point, function (err, doc) {
-        res.setHeader('Content-Type', 'application/text');
+        res.setHeader('Content-Type', 'application/json');
         res.send(doc);
     });
 });
 
 router.get('/tree/:id', function (req, res, next) {
-
+    TreeSpot.get(req.params.id, function (err, doc) {
+        if (err == null) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(doc);
+        } else {
+            next(createError(404));
+        }
+    });
 });
 
 router.post('/tree/:id', getUser, function (req, res, next) {

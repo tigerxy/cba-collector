@@ -22,7 +22,7 @@ db.on('db', function (data) {
 });*/
 
 var indexRouter = require('./routes/index');
-var tokenRouter = require('./routes/token');
+var mapRouter = require('./routes/map');
 var apiRouter = require('./routes/api');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/map', tokenRouter);
+app.use('/map', mapRouter);
 app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler

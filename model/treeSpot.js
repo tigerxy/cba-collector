@@ -12,6 +12,11 @@ exports.add = function add(user, size, coordinates, callback) {
     spot.save(callback);
 }; // end exports.add
 
+exports.get = function get(id,callback) {
+    var TreeSpot = mongoose.model('TreeSpot');
+    TreeSpot.findById(id,callback);
+};
+
 exports.list = function list(time, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
     TreeSpot.find({
