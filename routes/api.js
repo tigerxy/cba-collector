@@ -35,7 +35,7 @@ var getUser = function (req, res, next) {
 };
 
 /* GET home page. */
-router.get('/areas', function (req, res, next) {
+router.get('/area', function (req, res, next) {
     Area.list(function (err, areas) {
         res.setHeader('Content-Type', 'application/json');
         res.send(areas);
