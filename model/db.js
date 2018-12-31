@@ -1,5 +1,7 @@
 var events = require('events');
 var mongoose = require('mongoose');
+var uid = require('rand-token').uid;
+
 var areaSchema = new mongoose.Schema({
     type: { type: String, default: "Feature" },
     geometry: {
@@ -8,7 +10,8 @@ var areaSchema = new mongoose.Schema({
     },
     properties: {
         number: Number,
-        name: String
+        name: String,
+        user: mongoose.Schema.Types.ObjectId
     }
 });
 var treeSpotSchema = new mongoose.Schema({
@@ -18,13 +21,22 @@ var treeSpotSchema = new mongoose.Schema({
         coordinates: [Number]
     },
     properties: {
-        created: { type: Date, default: Date.now() },
         size: Number,
-        creator: String,
-        pickedup: { type: Boolean, default: false },
-        assinged: { type: Boolean, default: false }
+        status: [
+            {
+                user: mongoose.Schema.Types.ObjectId,
+                time: { type: Date, default: Date.now() },
+                action: String
+            }
+        ]
     }
 });
+var userSchema = new mongoose.Schema({
+    token: { type: String, default: uid(9) },
+    description: String,
+    admin: { type: Boolean, default: false }
+});
+mongoose.model('User', userSchema);
 mongoose.model('Area', areaSchema);
 var tree = mongoose.model('TreeSpot', treeSpotSchema);
 mongoose.connect('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba');
@@ -32,6 +44,6 @@ mongoose.connect('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb
 var e = new events.EventEmitter();
 tree.watch().on('change', function (data) {
     console.log('emit db.js');
-    e.emit('db',[data]);
+    e.emit('db', [data]);
 });
 module.exports = e;

@@ -1,19 +1,15 @@
 var mongoose = require('mongoose');
-exports.add = function add(creator, size, coordinates, callback) {
+exports.add = function add(user, size, coordinates, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
     var spot = new TreeSpot;
-    spot.properties.created = Date.now();
     spot.geometry.coordinates = coordinates;
-    spot.properties.creator = creator;
     spot.properties.size = size;
-    spot.save(function (err) {
-        if (err) {
-            console.error(err);
-            callback(false)
-        } else {
-            callback(true);
-        }
-    });
+    spot.properties.status = [{
+        user: user._id,
+        time: Date.now(),
+        action: 'add'
+    }];
+    spot.save(callback);
 }; // end exports.add
 
 exports.list = function list(time, callback) {
@@ -42,6 +38,21 @@ exports.listAll = function listAll(callback) {
             }
         });
 }; // end exports.list
+
+exports.remove = function remove(id, user, callback) {
+    var TreeSpot = mongoose.model('TreeSpot');
+    if (user.admin) {
+        TreeSpot.findOneAndDelete({ _id: id }, callback);
+    } else {
+        TreeSpot.findOneAndUpdate({ _id: id }, {
+            $push: {
+                user: user._id,
+                time: Date.now(),
+                action: 'remove'
+            }
+        }, callback);
+    }
+};
 
 exports.addWebsocket = function addWebsocket(callback) {
     var TreeSpot = mongoose.model('TreeSpot');
