@@ -8,13 +8,5 @@ exports.list = function list(callback) {
     a.properties.number = 42;
     a.save();*/
 
-    Area.find({},
-        function (err, areas) {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log(areas);
-                callback("", areas);
-            }
-        });
+    Area.find({},callback);
 }; // end exports.list

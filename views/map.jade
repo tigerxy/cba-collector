@@ -24,6 +24,7 @@ block content
 
   .fixed-bottom
     button.btn.btn-primary.btn-lg.btn-block(type='button', data-toggle='modal', data-target='#addModal') Haufen eintragen
+    button.btn.btn-primary.btn-lg.btn-block(type='button', data-toggle='modal', data-target='#editModal') Haufen bearbeiten
 
   #addModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addModalLabel', aria-hidden='true')
     .modal-dialog(role='document')
@@ -47,6 +48,24 @@ block content
           button.btn.btn-secondary(type='button', data-dismiss='modal') Abbrechen
           |         
           button#add.btn.btn-primary(type='button') Hinzufügen
+  #editModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editModalLabel', aria-hidden='false')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#editModalLabel.modal-title Haufen bearbeiten
+          |         
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') &times;
+        |       
+        .modal-body
+
+        |       
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Abbrechen
+          |         
+          button#save.btn.btn-primary(type='button') Speichern
+          button#delete.btn.btn-danger(type='button') Löschen
+          button#collected.btn.btn-success(type='button') Abgeholt
 
   script const token = '#{token}';
   script(src='/javascripts/map.js')

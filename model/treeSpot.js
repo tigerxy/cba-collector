@@ -12,36 +12,21 @@ exports.add = function add(user, size, coordinates, callback) {
     spot.save(callback);
 }; // end exports.add
 
-exports.get = function get(id,callback) {
+exports.get = function get(id, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
-    TreeSpot.findById(id,callback);
+    TreeSpot.findById(id, callback);
 };
 
-exports.list = function list(time, callback) {
+exports.listNewest = function listNewest(time, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
     TreeSpot.find({
-        'properties.created': { $gte: time }
-    }, function (err, treespots) {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log(treespots);
-            callback("", treespots);
-        }
-    });
+        'properties.status.time': { $gte: time }
+    }, callback);
 }; // end exports.list
 
-exports.listAll = function listAll(callback) {
+exports.list = function list(callback) {
     var TreeSpot = mongoose.model('TreeSpot');
-    TreeSpot.find({},
-        function (err, treespots) {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log(treespots);
-                callback("", treespots);
-            }
-        });
+    TreeSpot.find({}, callback);
 }; // end exports.list
 
 exports.remove = function remove(id, user, callback) {
@@ -50,12 +35,16 @@ exports.remove = function remove(id, user, callback) {
         TreeSpot.findOneAndDelete({ _id: id }, callback);
     } else {
         TreeSpot.findOneAndUpdate({ _id: id }, {
-            $push: {
-                user: user._id,
-                time: Date.now(),
-                action: 'remove'
+            $addToSet: {
+                'properties.status': {
+                    user: user._id,
+                    time: Date.now(),
+                    action: 'remove'
+                }
             }
-        }, callback);
+        },
+            { returnOriginal: false },
+            callback);
     }
 };
 

@@ -37,17 +37,25 @@ var getUser = function (req, res, next) {
 /* GET home page. */
 router.get('/area', function (req, res, next) {
     Area.list(function (err, areas) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(areas);
+        if (err != null) {
+            next(createError(404));
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(areas);
+        }
     });
 });
 
 router.get('/tree', function (req, res, next) {
     var sec = req.query.time == undefined ? 0 : parseInt(req.query.time);
     var time = new Date(sec == NaN ? 0 : sec);
-    TreeSpot.list(time, function (err, treespots) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(treespots);
+    TreeSpot.listNewest(time, function (err, treespots) {
+        if (err != null) {
+            next(createError(404));
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(treespots);
+        }
     });
 });
 
