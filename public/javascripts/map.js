@@ -1,16 +1,12 @@
-/*var x = document.getElementById("demo");
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(showPosition);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
+function openDialog(o) {
+    $('.dialog').addClass('inactive');
+    $('#' + o + 'Dialog').removeClass('inactive');
 }
 
-function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude +
-    "<br>Longitude: " + position.coords.longitude;
-}*/
+function onOpenDialog(e) {
+    var o = e.target.attributes.open.nodeValue;
+    openDialog(o);
+}
 
 function alert(type, message) {
     var html = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' +
@@ -36,7 +32,8 @@ function onAddTrees(event) {
             alert('danger', 'Fehler');
         })
         .always(function () {
-            $('#addModal').modal('hide');
+            openDialog('main');
+            //$('#addModal').modal('hide');
         });
 }
 
@@ -177,3 +174,5 @@ map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
 
 $('#add').on("click", gpsPosition, onAddTrees);
+$('#openAddDialog').on("click", onOpenDialog);
+$('#openMainDialog').on("click", onOpenDialog);
