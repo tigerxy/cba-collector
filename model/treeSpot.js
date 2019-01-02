@@ -1,15 +1,19 @@
 var mongoose = require('mongoose');
 exports.add = function add(user, size, coordinates, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
-    var spot = new TreeSpot;
-    spot.geometry.coordinates = coordinates;
-    spot.properties.size = size;
-    spot.properties.status = [{
-        user: user._id,
-        time: Date.now(),
-        action: 'add'
-    }];
-    spot.save(callback);
+    TreeSpot.create({
+        geometry: {
+            coordinates: coordinates
+        },
+        properties: {
+            size: size,
+            status: [{
+                user: user._id,
+                time: Date.now(),
+                action: 'add'
+            }]
+        }
+    }, callback);
 }; // end exports.add
 
 exports.get = function get(id, callback) {

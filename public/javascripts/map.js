@@ -23,12 +23,7 @@ function alert(type, message) {
 }
 
 function onAddTrees(event) {
-    $.ajax({
-        type: "POST",
-        url: "/api/tree",
-        headers: {
-            token: token
-        },
+    $.post("/api/tree", {
         data: {
             size: 1,
             lon: event.data.getLatLng().lng,
@@ -52,9 +47,31 @@ function loadAreas(geojson) {
     $.getJSON("/api/area", function () { })
         .done(function (data) {
             console.log(data);
-            var geo = L.geoJSON(data, { style: { color: 'red', fill: false } });
+            var bounds = null;
+            var geo = L.geoJSON(data, {
+                style: function (feature) {
+                    if (feature.properties.yours) {
+                        return {
+                            color: 'red',
+                            fill: false
+                        };
+                    } else {
+                        return {
+                            color: 'gray',
+                            opacity: 0.5,
+                            fill: true,
+                            fillColor: 'gray'
+                        };
+                    }
+                },
+                onEachFeature: function (feature, layer) {
+                    if (feature.properties.yours) {
+                        bounds = layer.getBounds();
+                    }
+                }
+            });
             geo.addTo(map);
-            map.fitBounds(geo.getBounds());
+            map.fitBounds(bounds == null ? geo.getBounds() : bounds);
         })
         .fail(function (err) {
             console.error(err.message);
@@ -98,6 +115,12 @@ function onLocationError(e) {
     //alert('danger', 'Position konnte nicht ermittelt werden.');
 }
 
+$.ajaxSetup({
+    headers: {
+        token: token
+    }
+});
+
 var TreeIcon = L.Icon.extend({
     options: {
         iconSize: [30, 35],
@@ -128,7 +151,7 @@ gpsPosition.addTo(map);
 var treePosition = L.geoJSON([], {
     pointToLayer: function (feature, latlng) {
         var icon;
-        switch (feature.properties.status[feature.properties.status.length-1].action) {
+        switch (feature.properties.status[feature.properties.status.length - 1].action) {
             case 'remove':
                 icon = redIcon;
                 break;

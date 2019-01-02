@@ -35,8 +35,8 @@ var getUser = function (req, res, next) {
 };
 
 /* GET home page. */
-router.get('/area', function (req, res, next) {
-    Area.list(function (err, areas) {
+router.get('/area', getUser, function (req, res, next) {
+    Area.list(req.user, function (err, areas) {
         if (err != null) {
             next(createError(404));
         } else {

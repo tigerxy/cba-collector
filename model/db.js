@@ -32,8 +32,8 @@ var treeSpotSchema = new mongoose.Schema({
     }
 });
 var userSchema = new mongoose.Schema({
-    token: { type: String, default: uid(9) },
-    description: String,
+    token: { type: String, default: function () { return uid(9) } },
+    name: String,
     admin: { type: Boolean, default: false }
 });
 mongoose.model('User', userSchema);
