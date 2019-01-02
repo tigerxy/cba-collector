@@ -24,13 +24,10 @@ function alert(type, message) {
 
 function onAddTrees(event) {
     $.post("/api/tree", {
-        data: {
-            size: 1,
-            lon: event.data.getLatLng().lng,
-            lat: event.data.getLatLng().lat,
-            accuracy: event.data.getRadius(),
-            token: token
-        }
+        size: 1,
+        lon: event.data.getLatLng().lng,
+        lat: event.data.getLatLng().lat,
+        accuracy: event.data.getRadius()
     })
         .done(function () {
             alert('success', 'Haufen erfolgreich hinzugefügt.');

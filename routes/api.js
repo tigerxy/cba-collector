@@ -40,8 +40,7 @@ router.get('/area', getUser, function (req, res, next) {
         if (err != null) {
             next(createError(404));
         } else {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(areas);
+            res.json(areas);
         }
     });
 });
@@ -53,8 +52,7 @@ router.get('/tree', function (req, res, next) {
         if (err != null) {
             next(createError(404));
         } else {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(treespots);
+            res.json(treespots);
         }
     });
 });
@@ -64,16 +62,18 @@ router.post('/tree', getUser, function (req, res, next) {
     var point = [Number(req.body.lon), Number(req.body.lat)];
 
     TreeSpot.add(req.user, size, point, function (err, doc) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(doc);
+        if (err == null) {
+            res.json(doc);
+        } else {
+            next(createError(404));
+        }
     });
 });
 
 router.get('/tree/:id', function (req, res, next) {
     TreeSpot.get(req.params.id, function (err, doc) {
         if (err == null) {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(doc);
+            res.json(doc);
         } else {
             next(createError(404));
         }
@@ -89,8 +89,7 @@ router.delete('/tree/:id', getUser, function (req, res, next) {
         if (err != null) {
             next(createError(404));
         } else {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(r);
+            res.json(r);
         }
     });
 });
@@ -100,8 +99,7 @@ router.get('/user', requireAdmin, function (req, res, next) {
         if (err != null) {
             next(createError(404));
         } else {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(userlist);
+            res.json(userlist);
         }
     });
 });
