@@ -1,5 +1,9 @@
-var TreeIcon = (function () {
-    function TreeIcon(color) {
+import { GeoJsonObject } from "geojson";
+import { LatLng } from "leaflet";
+
+class TreeIcon {
+    private icon: L.Icon
+    constructor(color) {
         this.icon = new L.Icon({
             iconUrl: '/images/tree_' + color + '.png',
             iconSize: [30, 35],
@@ -7,50 +11,63 @@ var TreeIcon = (function () {
             popupAnchor: [0, -37]
         });
     }
-    TreeIcon.prototype.get = function () {
+    public get(): L.Icon {
         return this.icon;
-    };
-    return TreeIcon;
-}());
-var leafletmap = (function () {
-    function leafletmap(id) {
-        this.bounds = null;
-        this.greenIcon = new TreeIcon('green');
-        this.yellowIcon = new TreeIcon('yellow');
-        this.redIcon = new TreeIcon('red');
-        this.greyIcon = new TreeIcon('grey');
+    }
+}
+
+class leafletmap {
+    private map: L.Map
+    private bounds: L.LatLngBounds = null
+    private gpsPosition: L.Circle
+    private areas: GeoJSON<any>
+    private trees: GeoJSON<any>
+    private greenIcon: L.Icon = new TreeIcon('green');
+    private yellowIcon: L.Icon = new TreeIcon('yellow');
+    private redIcon: L.Icon = new TreeIcon('red');
+    private greyIcon: L.Icon = new TreeIcon('grey');
+
+    constructor(id: string) {
         this.map = L.map(id).fitWorld();
         this.addRights();
         this.addLocationPosition();
+
         this.configAreas();
         this.configTrees();
     }
-    leafletmap.prototype.addRights = function () {
+
+    private addRights() {
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            id: 'mapbox.streets'
+                id: 'mapbox.streets'
         }).addTo(this.map);
-    };
-    leafletmap.prototype.addLocationPosition = function () {
+    }
+
+    private addLocationPosition() {
         this.gpsPosition = L.circle([51, 9], { radius: 1500000 });
         this.gpsPosition.addTo(this.map);
+
         this.map.locate({ watch: true, enableHighAccuracy: true });
         this.map.on('locationfound', this.onLocationFound);
         this.map.on('locationerror', this.onLocationError);
-    };
-    leafletmap.prototype.onLocationFound = function (e) {
+    }
+    
+    private onLocationFound(e) {
         var radius = e.accuracy / 2;
+        
         console.log(this);
         this.gpsPosition.setLatLng(e.latlng);
         this.gpsPosition.setRadius(radius);
-    };
-    leafletmap.prototype.onLocationError = function (e) {
+    }
+
+    private onLocationError(e) {
         alert('danger', e.message);
-    };
-    leafletmap.prototype.configAreas = function () {
+    }
+
+    private configAreas() {
         this.areas = L.geoJSON([], {
             style: function (feature) {
                 if (feature.properties.yours) {
@@ -58,8 +75,7 @@ var leafletmap = (function () {
                         color: 'red',
                         fill: false
                     };
-                }
-                else {
+                } else {
                     return {
                         color: 'gray',
                         opacity: 0.5,
@@ -75,12 +91,14 @@ var leafletmap = (function () {
             }
         });
         this.areas.addTo(this.map);
-    };
-    leafletmap.prototype.addAreas = function (geojson) {
+    }
+
+    public addAreas(geojson: GeoJSON.GeoJsonObject) {
         this.trees.addData(geojson);
         this.map.fitBounds(this.bounds == null ? this.areas.getBounds() : this.bounds);
-    };
-    leafletmap.prototype.configTrees = function () {
+    }
+
+    private configTrees() {
         this.trees = L.geoJSON([], {
             pointToLayer: function (feature, latlng) {
                 var icon;
@@ -98,48 +116,57 @@ var leafletmap = (function () {
                 return L.marker(latlng, { icon: icon });
             },
             onEachFeature: function onEachFeature(feature, layer) {
+                //layer.bindPopup(feature.properties.creator);
                 layer.on('click', function () { onOpenEdit(layer, feature); });
             }
         });
         this.trees.addTo(this.map);
-    };
-    leafletmap.prototype.addTrees = function (geojson) {
+    }
+
+    public addTrees(geojson: GeoJSON.GeoJsonObject) {
         this.trees.addData(geojson);
-    };
-    leafletmap.prototype.getPosition = function () {
+    }
+
+    public getPosition(): LatLng {
         return this.gpsPosition.getLatLng();
-    };
-    return leafletmap;
-}());
+    }
+}
+
 var map = new leafletmap('map');
+
 function openDialog(o) {
     $('.dialog').addClass('inactive');
     $('#' + o + 'Dialog').removeClass('inactive');
 }
+
 function onOpenDialog(e) {
     var o = e.target.attributes.open.nodeValue;
     openDialog(o);
 }
+
 function onOpenEdit(layer, feature) {
     console.log(feature);
     openDialog('edit');
 }
+
 function alert(type, message) {
     var html = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' +
         '   <strong>' + message + '</strong>' +
         '       <button class="close" type="button" data-dismiss="alert" aria-label="Close">' +
         '           <span aria-hidden="true">&times;</span>' +
-        '       </button>';
+        '       </button>'
     '   </div>';
     var elem = $(html);
     elem.appendTo('#alert');
     setTimeout(function (e) { $(e[0]).alert('close'); }, 5000, elem);
 }
+
 $.ajaxSetup({
     headers: {
         token: token
     }
 });
+
 function onAddTrees(event) {
     $.post("/api/tree", {
         size: 1,
@@ -147,46 +174,49 @@ function onAddTrees(event) {
         lat: event.data.lat
     })
         .done(function () {
-        alert('success', 'Haufen erfolgreich hinzugefügt.');
-    })
+            alert('success', 'Haufen erfolgreich hinzugefügt.');
+        })
         .fail(function () {
-        alert('danger', 'Fehler');
-    })
+            alert('danger', 'Fehler');
+        })
         .always(function () {
-        openDialog('main');
-    });
+            openDialog('main');
+            //$('#addModal').modal('hide');
+        });
 }
+
 function loadAreas() {
     $.getJSON("/api/area", function () { })
         .done(function (data) {
-        console.log(data);
-        map.addAreas(data);
-    })
+            console.log(data);
+            map.addAreas(data);
+        })
         .fail(function (err) {
-        console.error(err.message);
-    })
+            console.error(err.message);
+        })
         .always(function () {
-    });
+        });
 }
-function loadTrees(time) {
-    if (time === void 0) { time = 0; }
+
+function loadTrees(time = 0) {
     $.getJSON("/api/tree?time=" + time, function () { })
         .done(function (data) {
-        console.log(data);
-        data.length > 0 ? map.addTrees(data) : 0;
-    })
+            console.log(data);
+            data.length > 0 ? map.addTrees(data) : 0;
+        })
         .fail(function (err) {
-        console.error(err.message);
-    })
+            console.error(err.message);
+        })
         .always(function () {
-        time = Date.now();
-        setTimeout(function () {
-            loadTrees(time);
-        }, 30000);
-    });
+            time = Date.now();
+            setTimeout(function () {
+                loadTrees(time)
+            }, 30000);
+        });
 }
+
 loadAreas();
 loadTrees();
+
 $('#add').on("click", map.getPosition(), onAddTrees);
 $('.openDialog').on("click", onOpenDialog);
-//# sourceMappingURL=map.js.map

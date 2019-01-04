@@ -26,7 +26,7 @@ block content
     .flex-grow-1
       #map
     #mainDialog.flex-grow-0.dialog
-      button#openAddDialog.btn.btn-primary.btn-lg.btn-block(type='button',open='add') Haufen eintragen
+      button.openDialog.btn.btn-primary.btn-lg.btn-block(type='button',open='add') Haufen eintragen
     #addDialog.flex-grow-0.dialog.inactive
       h5 Haufen eintragen
       .form-group
@@ -36,9 +36,10 @@ block content
           +radio-button(1,true) 木
           +radio-button(2) 林
           +radio-button(3) 森  
-      button#openMainDialog.btn.btn-secondary(type='button',open='main') Abbrechen      
+      button.openDialog.btn.btn-secondary(type='button',open='main') Abbrechen      
       button#add.btn.btn-primary(type='button') Hinzufügen
     #editDialog.flex-grow-0.dialog.inactive
+      button.openDialog.btn.btn-secondary(type='button',open='main') Abbrechen  
  
 
   .fixed-top
