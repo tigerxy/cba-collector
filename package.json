@@ -23,9 +23,6 @@
     "rand-token": "^0.4.0"
   },
   "devDependencies": {
-    "@types/jquery": "^3.3.29",
-    "@types/leaflet": "^1.2.14",
-    "nodemon": "^1.18.9",
-    "typescript": "^3.2.2"
+    "nodemon": "^1.18.9"
   }
 }
