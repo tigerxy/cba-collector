@@ -68,7 +68,7 @@ function loadAreas(geojson) {
             map.fitBounds(bounds == null ? geo.getBounds() : bounds);
         })
         .fail(function (err) {
-            console.error(err.message);
+            console.error(err);
         })
         .always(function () {
         });
@@ -174,5 +174,4 @@ map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
 
 $('#add').on("click", gpsPosition, onAddTrees);
-$('#openAddDialog').on("click", onOpenDialog);
-$('#openMainDialog').on("click", onOpenDialog);
+$('.openDialog').on("click", onOpenDialog);
