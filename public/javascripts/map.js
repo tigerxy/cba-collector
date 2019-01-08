@@ -1,3 +1,16 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var TreeIcon = (function () {
     function TreeIcon(color) {
         this.icon = new L.Icon({
@@ -12,18 +25,20 @@ var TreeIcon = (function () {
     };
     return TreeIcon;
 }());
-var leafletmap = (function () {
+var leafletmap = (function (_super) {
+    __extends(leafletmap, _super);
     function leafletmap(id) {
-        this.bounds = null;
-        this.greenIcon = new TreeIcon('green');
-        this.yellowIcon = new TreeIcon('yellow');
-        this.redIcon = new TreeIcon('red');
-        this.greyIcon = new TreeIcon('grey');
-        this.map = L.map(id).fitWorld();
-        this.addRights();
-        this.addLocationPosition();
-        this.configAreas();
-        this.configTrees();
+        var _this = _super.call(this, id) || this;
+        _this.bounds = null;
+        _this.greenIcon = new TreeIcon('green');
+        _this.yellowIcon = new TreeIcon('yellow');
+        _this.redIcon = new TreeIcon('red');
+        _this.greyIcon = new TreeIcon('grey');
+        _this.addRights();
+        _this.addLocationPosition();
+        _this.configAreas();
+        _this.configTrees();
+        return _this;
     }
     leafletmap.prototype.addRights = function () {
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -32,14 +47,12 @@ var leafletmap = (function () {
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.streets'
-        }).addTo(this.map);
+        }).addTo(this);
     };
     leafletmap.prototype.addLocationPosition = function () {
         this.gpsPosition = L.circle([51, 9], { radius: 1500000 });
-        this.gpsPosition.addTo(this.map);
-        this.map.locate({ watch: true, enableHighAccuracy: true });
-        this.map.on('locationfound', this.onLocationFound);
-        this.map.on('locationerror', this.onLocationError);
+        this.addLayer(this.gpsPosition);
+        this.locate({ watch: true, enableHighAccuracy: true });
     };
     leafletmap.prototype.onLocationFound = function (e) {
         var radius = e.accuracy / 2;
@@ -74,11 +87,10 @@ var leafletmap = (function () {
                 }
             }
         });
-        this.areas.addTo(this.map);
+        this.addLayer(this.areas);
     };
     leafletmap.prototype.addAreas = function (geojson) {
         this.trees.addData(geojson);
-        this.map.fitBounds(this.bounds == null ? this.areas.getBounds() : this.bounds);
     };
     leafletmap.prototype.configTrees = function () {
         this.trees = L.geoJSON([], {
@@ -101,7 +113,7 @@ var leafletmap = (function () {
                 layer.on('click', function () { onOpenEdit(layer, feature); });
             }
         });
-        this.trees.addTo(this.map);
+        this.addLayer(this.trees);
     };
     leafletmap.prototype.addTrees = function (geojson) {
         this.trees.addData(geojson);
@@ -110,7 +122,7 @@ var leafletmap = (function () {
         return this.gpsPosition.getLatLng();
     };
     return leafletmap;
-}());
+}(L.Map));
 var map = new leafletmap('map');
 function openDialog(o) {
     $('.dialog').addClass('inactive');

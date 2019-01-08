@@ -1,5 +1,5 @@
 import { GeoJsonObject } from "geojson";
-import { LatLng } from "leaflet";
+import {} from 'leaflet';
 
 class TreeIcon {
     private icon: L.Icon
@@ -16,19 +16,20 @@ class TreeIcon {
     }
 }
 
-class leafletmap {
-    private map: L.Map
+class leafletmap extends L.Map {
+    //private map: L.Map
     private bounds: L.LatLngBounds = null
     private gpsPosition: L.Circle
     private areas: GeoJSON<any>
     private trees: GeoJSON<any>
-    private greenIcon: L.Icon = new TreeIcon('green');
-    private yellowIcon: L.Icon = new TreeIcon('yellow');
-    private redIcon: L.Icon = new TreeIcon('red');
-    private greyIcon: L.Icon = new TreeIcon('grey');
+    private greenIcon: TreeIcon = new TreeIcon('green');
+    private yellowIcon: TreeIcon = new TreeIcon('yellow');
+    private redIcon: TreeIcon = new TreeIcon('red');
+    private greyIcon: TreeIcon = new TreeIcon('grey');
 
     constructor(id: string) {
-        this.map = L.map(id).fitWorld();
+        super(id)
+        //this.map = L.map(id).fitWorld();
         this.addRights();
         this.addLocationPosition();
 
@@ -42,28 +43,28 @@ class leafletmap {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                id: 'mapbox.streets'
-        }).addTo(this.map);
+            id: 'mapbox.streets'
+        }).addTo(this);
     }
 
     private addLocationPosition() {
         this.gpsPosition = L.circle([51, 9], { radius: 1500000 });
-        this.gpsPosition.addTo(this.map);
+        this.addLayer(this.gpsPosition);
 
-        this.map.locate({ watch: true, enableHighAccuracy: true });
-        this.map.on('locationfound', this.onLocationFound);
-        this.map.on('locationerror', this.onLocationError);
+        this.locate({ watch: true, enableHighAccuracy: true });
+        //this.map.on('locationfound', this.onLocationFound);
+        //this.map.on('locationerror', this.onLocationError);
     }
-    
-    private onLocationFound(e) {
+
+    public onLocationFound(e) {
         var radius = e.accuracy / 2;
-        
+
         console.log(this);
         this.gpsPosition.setLatLng(e.latlng);
         this.gpsPosition.setRadius(radius);
     }
 
-    private onLocationError(e) {
+    public onLocationError(e) {
         alert('danger', e.message);
     }
 
@@ -90,12 +91,12 @@ class leafletmap {
                 }
             }
         });
-        this.areas.addTo(this.map);
+        this.addLayer(this.areas);
     }
 
     public addAreas(geojson: GeoJSON.GeoJsonObject) {
         this.trees.addData(geojson);
-        this.map.fitBounds(this.bounds == null ? this.areas.getBounds() : this.bounds);
+        //this.fitBounds(this.bounds == null ? this.areas.getBounds() : this.bounds);
     }
 
     private configTrees() {
@@ -120,7 +121,7 @@ class leafletmap {
                 layer.on('click', function () { onOpenEdit(layer, feature); });
             }
         });
-        this.trees.addTo(this.map);
+        this.addLayer(this.trees);
     }
 
     public addTrees(geojson: GeoJSON.GeoJsonObject) {

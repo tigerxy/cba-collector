@@ -31,7 +31,7 @@ exports.list = function list(callback) {
     u.description = 'Test Admin Roland';
     u.save();*/
     User.find({}, {
-        token: 0 // exclude token
+        //token: 0 // exclude token
     }, function (err, res) {
         callback(err, res);
     });
