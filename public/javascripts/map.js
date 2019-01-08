@@ -1,12 +1,6 @@
-function openDialog(o) {
-    $('.dialog').addClass('inactive');
-    $('#' + o + 'Dialog').removeClass('inactive');
-}
-
-function onOpenDialog(e) {
-    var o = e.target.attributes.open.nodeValue;
-    openDialog(o);
-}
+//-------------------------------------
+// Map
+//-------------------------------------
 
 function alert(type, message) {
     var html = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' +
@@ -18,12 +12,11 @@ function alert(type, message) {
     $('#alert').append(html);
 }
 
-function onAddTrees(event) {
+function onAddTrees(size, latlng) {
     $.post("/api/tree", {
-        size: 1,
-        lon: event.data.getLatLng().lng,
-        lat: event.data.getLatLng().lat,
-        accuracy: event.data.getRadius()
+        size: size,
+        lon: latlng.lng,
+        lat: latlng.lat
     })
         .done(function () {
             alert('success', 'Haufen erfolgreich hinzugefügt.');
@@ -130,12 +123,8 @@ var greenIcon = new TreeIcon({ iconUrl: '/images/tree_green.png' }),
 
 var map = L.map('map').fitWorld();
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-    maxZoom: 18,
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    id: 'mapbox.streets'
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 
@@ -160,7 +149,7 @@ var treePosition = L.geoJSON([], {
     },
     onEachFeature: function onEachFeature(feature, layer) {
         //layer.bindPopup(feature.properties.creator);
-        layer.on('click', function () { console.log(feature) });
+        layer.on('click', function () { openDialog('edit', feature); });
     }
 });
 treePosition.addTo(map);
@@ -173,5 +162,38 @@ map.locate({ watch: true, enableHighAccuracy: true });
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
 
-$('#add').on("click", gpsPosition, onAddTrees);
+//var cross = L.control.centerCross({ show: false });
+//map.addControl(cross);
+var cross = L.centerCross();
+map.addLayer(cross);
+cross.setVisible(false);
+
+
+//-------------------------------------
+// Dialogs
+//-------------------------------------
+function openDialog(dialogName, data) {
+    cross.setVisible(false);
+    $('.dialog').addClass('inactive');
+    $('#' + dialogName + 'Dialog').removeClass('inactive');
+    $('body').trigger(dialogName, data);
+}
+
+function onOpenDialog(e) {
+    var o = e.target.attributes.open.nodeValue;
+    openDialog(o);
+}
+
+$('#add').on("click", function (e) {
+    onAddTrees(1, map.getCenter());
+});
 $('.openDialog').on("click", onOpenDialog);
+$('body').on('add', function (e) {
+    map.flyTo(gpsPosition.getLatLng());
+    cross.setVisible(true);
+});
+$('body').on('main', function (e) {
+});
+$('body').on('edit', function (e, feature) {
+    console.log(feature);
+});
