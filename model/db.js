@@ -22,6 +22,7 @@ var treeSpotSchema = new mongoose.Schema({
     },
     properties: {
         size: Number,
+        collector: mongoose.Schema.Types.ObjectId,
         status: [
             {
                 user: mongoose.Schema.Types.ObjectId,
@@ -34,6 +35,7 @@ var treeSpotSchema = new mongoose.Schema({
 var userSchema = new mongoose.Schema({
     token: { type: String, default: function () { return uid(9) } },
     name: String,
+    collector: { type: Boolean, default: false },
     admin: { type: Boolean, default: false }
 });
 mongoose.model('User', userSchema);

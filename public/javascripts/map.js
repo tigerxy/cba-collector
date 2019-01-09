@@ -30,12 +30,74 @@ function onAddTrees(size, latlng) {
         });
 }
 
+function onGetCollectors(selectElem) {
+    selectElem.empty();
+    $.getJSON("/api/user/collectors", function () { })
+        .done(function (data) {
+            data.forEach(user => {
+                selectElem.append('<option value="' + user._id + '">' + user.name + '</option>');
+            });
+        })
+        .fail(function () {
+            alert('danger', 'Fehler');
+        })
+        .always(function () {
+
+        });
+}
+
+function onAssignTrees(id, userid) {
+    $.post("/api/tree/" + id + "/" + userid, {})
+        .done(function () {
+            alert('success', 'Haufen User zugewiesen.');
+        })
+        .fail(function () {
+            alert('danger', 'Fehler');
+        })
+        .always(function () {
+
+        });
+}
+
+function onDeleteTrees(id) {
+    $.ajax({
+        url: "/api/tree/" + id,
+        method: 'delete'
+    })
+        .done(function () {
+            alert('success', 'Haufen erfolgreich gelöscht.');
+        })
+        .fail(function () {
+            alert('danger', 'Fehler');
+        })
+        .always(function () {
+            openDialog('main');
+            //$('#addModal').modal('hide');
+        });
+}
+
+function onCollectTrees(id) {
+    $.ajax({
+        url: "/api/tree/" + id,
+        method: 'post'
+    })
+        .done(function () {
+            alert('success', 'Haufen erfolgreich gesammelt.');
+        })
+        .fail(function () {
+            alert('danger', 'Fehler');
+        })
+        .always(function () {
+            openDialog('main');
+            //$('#addModal').modal('hide');
+        });
+}
+
 function loadAreas(geojson) {
     $.getJSON("/api/area", function () { })
         .done(function (data) {
-            console.log(data);
             var bounds = null;
-            var geo = L.geoJSON(data, {
+            /*var geo = L.geoJSON(data, {
                 style: function (feature) {
                     if (feature.properties.yours) {
                         return {
@@ -57,8 +119,9 @@ function loadAreas(geojson) {
                     }
                 }
             });
-            geo.addTo(map);
-            map.fitBounds(bounds == null ? geo.getBounds() : bounds);
+            geo.addTo(map);*/
+            splitAndAddToLayerGroup(geojson, data);
+            map.fitBounds(geojson[(geojson[1].getLayers().length > 0) * 1].getBounds());
         })
         .fail(function (err) {
             console.error(err);
@@ -67,11 +130,17 @@ function loadAreas(geojson) {
         });
 }
 
+function splitAndAddToLayerGroup(layerGroup, data) {
+    data.forEach(item => {
+        layerGroup[(true == item.properties.yours || secLevel > 1) * 1].addData(item);
+    });
+}
+
 function loadTrees(geojson, time = 0) {
     $.getJSON("/api/tree?time=" + time, function () { })
         .done(function (data) {
             console.log(data);
-            data.length > 0 ? geojson.addData(data) : 0;
+            data.length > 0 ? splitAndAddToLayerGroup(geojson, data) : 0;
         })
         .fail(function (err) {
             console.error(err.message);
@@ -131,31 +200,78 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 var gpsPosition = L.circle([51, 9], { radius: 1500000 });
 gpsPosition.addTo(map);
 
-var treePosition = L.geoJSON([], {
-    pointToLayer: function (feature, latlng) {
-        var icon;
-        switch (feature.properties.status[feature.properties.status.length - 1].action) {
-            case 'remove':
-                icon = redIcon;
-                break;
-            case 'add':
-                icon = greenIcon;
-                break;
-            default:
-                icon = greyIcon;
-                break;
-        }
-        return L.marker(latlng, { icon: icon });
-    },
-    onEachFeature: function onEachFeature(feature, layer) {
-        //layer.bindPopup(feature.properties.creator);
-        layer.on('click', function () { openDialog('edit', feature); });
+var formatMarker = function (feature, latlng) {
+    var icon;
+    switch (feature.properties.status[feature.properties.status.length - 1].action) {
+        case 'remove':
+            icon = greyIcon;
+            break;
+        case 'add':
+            icon = redIcon;
+            break;
+        case 'assigned':
+            icon = yellowIcon;
+            break;
+        case 'collected':
+            icon = greenIcon;
+            break;
+        default:
+            icon = greyIcon;
+            break;
+    }
+    return L.marker(latlng, { icon: icon });
+}
+
+var formatFeature = function onEachFeature(feature, layer) {
+    //layer.bindPopup(feature.properties.creator);
+    layer.on('click', function () { openDialog('edit', feature); });
+}
+
+var myAreasLayerGroup = L.geoJSON([], {
+    style: {
+        color: 'red',
+        fill: false
     }
 });
-treePosition.addTo(map);
 
-loadAreas(treePosition);
-loadTrees(treePosition);
+var areasLayerGroup = L.geoJSON([], {
+    style: {
+        color: 'gray',
+        opacity: 0.5,
+        fill: true,
+        fillColor: 'gray'
+    }
+});
+
+var myTreeLayerGroup = L.geoJSON([], {
+    pointToLayer: formatMarker,
+    onEachFeature: formatFeature
+});
+
+var treeLayerGroup = L.geoJSON([], {
+    pointToLayer: formatMarker,
+    onEachFeature: formatFeature
+});
+
+//var allTrees = L.layerGroup([treePosition]);
+L.control.layers({},
+    {
+        "Mein Gebiete": myAreasLayerGroup,
+        "Andere Gebiete": areasLayerGroup,
+        "Meine Bäume": myTreeLayerGroup,
+        "Andere Bäume": treeLayerGroup
+    }).addTo(map);
+//$('.leaflet-control-layers-selector').prop("checked", true);
+//treePosition.addTo(map);
+map.addLayer(myTreeLayerGroup);
+if (secLevel != 2) {
+    map.addLayer(myAreasLayerGroup);
+    map.addLayer(areasLayerGroup);
+    map.addLayer(treeLayerGroup);
+}
+
+loadAreas([areasLayerGroup, myAreasLayerGroup]);
+loadTrees([treeLayerGroup, myTreeLayerGroup]);
 
 
 map.locate({ watch: true, enableHighAccuracy: true });
@@ -184,16 +300,51 @@ function onOpenDialog(e) {
     openDialog(o);
 }
 
-$('#add').on("click", function (e) {
-    onAddTrees(1, map.getCenter());
-});
+
+
 $('.openDialog').on("click", onOpenDialog);
 $('body').on('add', function (e) {
-    map.flyTo(gpsPosition.getLatLng());
     cross.setVisible(true);
+    map.flyTo(gpsPosition.getLatLng());
+    $('#add')
+        .off()
+        .on("click", function (e) {
+            onAddTrees(1, map.getCenter());
+        });
 });
 $('body').on('main', function (e) {
 });
 $('body').on('edit', function (e, feature) {
     console.log(feature);
+    if (secLevel >= 3) {
+        onGetCollectors($('select#user'));
+    }
+    var log = $('#editLog');
+    log.empty();
+    var status = feature.properties.status;
+    status.forEach(state => {
+        var d = new Date(state.time);
+        log.append('<tr><td>' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + '</td><td>' + state.action + '</td></tr>');
+    });
+    if (secLevel < 3 && status[status.length - 1].action != 'add') {
+        $('#delete').prop('disabled', true);
+    }
+    else {
+        $('#delete')
+            .prop('disabled', false)
+            .off()
+            .on("click", function (e) {
+                onDeleteTrees(feature._id);
+            });
+    }
+    $('#collect')
+        .off()
+        .on("click", function (e) {
+            onCollectTrees(feature._id);
+        });
+    $('#assign')
+        .off()
+        .on("click", function (e) {
+            onAssignTrees(feature._id, $('select#user').val());
+        });
 });

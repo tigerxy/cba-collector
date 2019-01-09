@@ -45,10 +45,10 @@ router.get('/area', getUser, function (req, res, next) {
     });
 });
 
-router.get('/tree', function (req, res, next) {
+router.get('/tree', getUser, function (req, res, next) {
     var sec = req.query.time == undefined ? 0 : parseInt(req.query.time);
     var time = new Date(sec == NaN ? 0 : sec);
-    TreeSpot.listNewest(time, function (err, treespots) {
+    TreeSpot.listNewest(req.user, time, function (err, treespots) {
         if (err != null) {
             next(createError(404));
         } else {
@@ -80,8 +80,26 @@ router.get('/tree/:id', function (req, res, next) {
     });
 });
 
+// Collect
 router.post('/tree/:id', getUser, function (req, res, next) {
+    TreeSpot.collect(req.params.id, req.user, function (err, doc) {
+        if (err == null) {
+            res.json(doc);
+        } else {
+            next(createError(404));
+        }
+    });
+});
 
+// Assign
+router.post('/tree/:id/:userid', requireAdmin, getUser, function (req, res, next) {
+    TreeSpot.assign(req.params.id, req.user, req.params.userid, function (err, doc) {
+        if (err == null) {
+            res.json(doc);
+        } else {
+            next(createError(404));
+        }
+    });
 });
 
 router.delete('/tree/:id', getUser, function (req, res, next) {
@@ -96,6 +114,16 @@ router.delete('/tree/:id', getUser, function (req, res, next) {
 
 router.get('/user', requireAdmin, function (req, res, next) {
     User.list(function (err, userlist) {
+        if (err != null) {
+            next(createError(404));
+        } else {
+            res.json(userlist);
+        }
+    });
+});
+
+router.get('/user/collectors', requireAdmin, function (req, res, next) {
+    User.listCollectors(function (err, userlist) {
         if (err != null) {
             next(createError(404));
         } else {

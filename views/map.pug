@@ -23,11 +23,11 @@ block head
       }
 
 block content
-  #full.d-flex.flex-column.align-items-stretch
+  #full.d-flex.flex-column.flex-sm-column.flex-md-column.flex-lg-row.flex-xl-row.align-items-stretch
     .flex-grow-1
       #map
     #mainDialog.flex-grow-0.dialog
-      button.openDialog.btn.btn-primary.btn-lg.btn-block(type='button',open='add') Haufen eintragen
+      button.openDialog.btn.btn-lg.btn-primary.btn-block(type='button',open='add') Haufen eintragen
     #addDialog.flex-grow-0.dialog.inactive
       h5 Haufen eintragen
       .form-group
@@ -37,55 +37,38 @@ block content
           +radio-button(1,true) 木
           +radio-button(2) 林
           +radio-button(3) 森  
-      button.openDialog.btn.btn-secondary(type='button',open='main') Abbrechen      
-      button#add.btn.btn-primary(type='button') Hinzufügen
+      .btn-group(role='group')
+        button.openDialog.btn.btn-lg.btn-secondary(type='button',open='main') Abbrechen      
+        button#add.btn.btn-lg.btn-primary(type='button') Hinzufügen
     #editDialog.flex-grow-0.dialog.inactive
-      button.openDialog.btn.btn-secondary(type='button',open='main') Abbrechen  
+      table.table
+        thead
+          tr
+            th(scope="col") Zeit
+            th(scope="col") Aktion
+        tbody#editLog
+      case permissionLevel
+        when 3
+          .input-group
+            select#user.form-control
+              option 1
+              option 2
+      .btn-group(role='group')
+        button.openDialog.btn.btn-lg.btn-secondary(type='button',open='main') Abbrechen  
+        case permissionLevel
+          when 1
+            button#delete.btn.btn-lg.btn-danger(type='button') Löschen
+          when 2
+            button#collect.btn.btn-lg.btn-success(type='button') Abgeholt
+          when 3
+            button#delete.btn.btn-lg.btn-danger(type='button') Löschen
+            button#collect.btn.btn-lg.btn-success(type='button') Abgeholt
+            button#assign.btn.btn-lg.btn-primary(type='button') Zuweisen
  
 
   .fixed-top
     #alert
 
-  #addModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addModalLabel', aria-hidden='true')
-    .modal-dialog(role='document')
-      .modal-content
-        .modal-header
-          h5#addModalLabel.modal-title Haufen eintragen
-          |         
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') &times;
-        |       
-        .modal-body
-          div.form-group
-            label(for='size') Bitte Größe auswählen
-            br
-            #size.btn-group.btn-group-toggle(data-toggle='buttons')
-              +radio-button(1,true) 木
-              +radio-button(2) 林
-              +radio-button(3) 森
-        |       
-        .modal-footer
-          button.btn.btn-secondary(type='button', data-dismiss='modal') Abbrechen
-          |         
-          button#add.btn.btn-primary(type='button') Hinzufügen
-  #editModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editModalLabel', aria-hidden='false')
-    .modal-dialog(role='document')
-      .modal-content
-        .modal-header
-          h5#editModalLabel.modal-title Haufen bearbeiten
-          |         
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') &times;
-        |       
-        .modal-body
-
-        |       
-        .modal-footer
-          button.btn.btn-secondary(type='button', data-dismiss='modal') Abbrechen
-          |         
-          button#save.btn.btn-primary(type='button') Speichern
-          button#delete.btn.btn-danger(type='button') Löschen
-          button#collected.btn.btn-success(type='button') Abgeholt
-
   script const token = '#{token}';
+  script const secLevel = '#{permissionLevel}';
   script(src='/javascripts/map.js')

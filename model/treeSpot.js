@@ -21,16 +21,80 @@ exports.get = function get(id, callback) {
     TreeSpot.findById(id, callback);
 };
 
-exports.listNewest = function listNewest(time, callback) {
+exports.collect = function collect(id, user, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
-    TreeSpot.find({
-        'properties.status.time': { $gte: time }
-    }, callback);
+    TreeSpot.findById(id, function (err, tree) {
+        if (err) {
+            callback(err, tree);
+        }
+        else if (new String(tree.properties.collector).valueOf() != new String(user._id).valueOf()) {
+            callback('Not assigned as collector', null);
+        } else {
+            tree.properties.status.push(
+                {
+                    user: user._id,
+                    time: Date.now(),
+                    action: 'collected'
+                }
+            );
+            tree.save(callback);
+        }
+    });
+};
+
+exports.assign = function assign(id, user, userid, callback) {
+    var TreeSpot = mongoose.model('TreeSpot');
+    TreeSpot.findById(id, function (err, tree) {
+        if (err) {
+            callback(err, tree);
+        }
+        else {
+            tree.properties.collector = userid;
+            tree.properties.status.push(
+                {
+                    user: user._id,
+                    time: Date.now(),
+                    action: 'assigned'
+                }
+            );
+            tree.save(callback);
+        }
+    });
+};
+
+exports.listNewest = function listNewest(user, time, callback) {
+    var TreeSpot = mongoose.model('TreeSpot');
+    TreeSpot.aggregate([
+        {
+            $match: {
+                'properties.status.time': {
+                    $gte: time
+                }
+            }
+        },
+        {
+
+            $addFields: {
+                'properties.yours': {
+                    $eq: ['$properties.collector', user._id]
+                }
+            }
+        }
+    ]).exec(callback);;
 }; // end exports.list
 
-exports.list = function list(callback) {
+exports.list = function list(user, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
-    TreeSpot.find({}, callback);
+    //TreeSpot.find({}, callback);
+    TreeSpot.aggregate([
+        {
+            $addFields: {
+                'properties.yours': {
+                    $eq: ['$properties.collector', user._id]
+                }
+            }
+        }
+    ]).exec(callback);
 }; // end exports.list
 
 exports.remove = function remove(id, user, callback) {
