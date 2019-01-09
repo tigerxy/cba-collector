@@ -1,5 +1,16 @@
 # cba-collector
 
+# TODO
+- [ ] automatisch haufen auf karte aktuallisieren
+- [ ] auswahl haufengröße
+- [ ] hilfe
+- [ ] größen beschreiben
+- [ ] tooltip gebietname
+- [ ] zurücksetzen button für admin
+- [ ] user in status anzeigen
+- [x] benachrichtigungen automatisch ausblenden
+- [x] button um zu gebiet zurück zu kehren
+
 # Installation
 ## Node.js
 Install packages

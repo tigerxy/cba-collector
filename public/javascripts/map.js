@@ -9,7 +9,9 @@ function alert(type, message) {
         '           <span aria-hidden="true">&times;</span>' +
         '       </button>'
     '   </div>';
-    $('#alert').append(html);
+    var elem = $(html);
+    elem.appendTo('#alert');
+    setTimeout(function (e) { $(e[0]).alert('close'); }, 5000, elem);
 }
 
 function onAddTrees(size, latlng) {
@@ -269,6 +271,14 @@ if (secLevel != 2) {
     map.addLayer(areasLayerGroup);
     map.addLayer(treeLayerGroup);
 }
+
+L.easyButton('fa-crosshairs', function (btn, map) {
+    map.fitBounds(myAreasLayerGroup.getBounds());
+}).addTo(map);
+
+L.easyButton('fa-question', function (btn, map) {
+    $('#helpModal').modal('show');
+}).addTo(map);
 
 loadAreas([areasLayerGroup, myAreasLayerGroup]);
 loadTrees([treeLayerGroup, myTreeLayerGroup]);
