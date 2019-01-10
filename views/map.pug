@@ -19,6 +19,7 @@ block head
       .dialog {
         padding: 10px;
         transition: flex-basis 200ms ease-in-out;
+        min-width: 20%;
       }
       .inactive {
         flex-basis: 0px;
@@ -77,9 +78,9 @@ block content
           when 2
             button#collect.btn.btn-lg.btn-success(type='button') Abgeholt
           when 3
-            button#delete.btn.btn-lg.btn-danger(type='button') Löschen
-            button#collect.btn.btn-lg.btn-success(type='button') Abgeholt
-            button#assign.btn.btn-lg.btn-primary(type='button') Zuweisen
+            button#delete.btn.btn-danger(type='button') Löschen
+            button#collect.btn.btn-success(type='button') Abgeholt
+            button#assign.btn.btn-primary(type='button') Zuweisen
 
 
   .fixed-top

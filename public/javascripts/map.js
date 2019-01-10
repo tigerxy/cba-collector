@@ -232,7 +232,13 @@ var formatFeature = function onEachFeature(feature, layer) {
 var myAreasLayerGroup = L.geoJSON([], {
     style: {
         color: 'red',
-        fill: false
+        fill: true,
+        fillOpacity: 0
+    },
+    onEachFeature: function (feature, layer) {
+        if (secLevel > 1) {
+            layer.bindTooltip(feature.properties.number + ': ' + feature.properties.name, { sticky: true, interactive: true });
+        }
     }
 });
 
@@ -271,6 +277,8 @@ if (secLevel != 2) {
     map.addLayer(areasLayerGroup);
     map.addLayer(treeLayerGroup);
 }
+
+
 
 L.easyButton('fa-crosshairs', function (btn, map) {
     map.fitBounds(myAreasLayerGroup.getBounds());
