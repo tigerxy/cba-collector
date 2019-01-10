@@ -1,11 +1,11 @@
 # cba-collector
 
 # TODO
-- [ ] automatisch haufen auf karte aktuallisieren
-- [ ] hilfe
-- [ ] größen beschreiben
-- [ ] zurücksetzen button für admin
-- [ ] user in status anzeigen
+- [ ] hilfe (uta)
+- [ ] größen beschreiben (uta)
+- [ ] automatisch haufen auf karte aktuallisieren (roland)
+- [ ] zurücksetzen button für admin (roland)
+- [ ] user in status anzeigen (roland)
 - [x] tooltip gebietname
 - [x] auswahl haufengröße
 - [x] benachrichtigungen automatisch ausblenden
