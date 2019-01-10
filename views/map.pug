@@ -55,6 +55,9 @@ block content
         button.openDialog.btn.btn-lg.btn-secondary(type='button',open='main') Abbrechen      
         button#add.btn.btn-lg.btn-primary(type='button') Hinzufügen
     #editDialog.flex-grow-0.dialog.inactive
+      p Größe:
+      .progress
+        #editSize.progress-bar(role="progressbar",aria-valuenow="3",aria-valuemin="1",aria-valuemax="3") 
       table.table
         thead
           tr
@@ -65,8 +68,7 @@ block content
         when 3
           .input-group
             select#user.form-control
-              option 1
-              option 2
+              option loading...
       .btn-group(role='group')
         button.openDialog.btn.btn-lg.btn-secondary(type='button',open='main') Abbrechen  
         case permissionLevel

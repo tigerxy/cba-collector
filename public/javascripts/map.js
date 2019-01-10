@@ -319,7 +319,7 @@ $('body').on('add', function (e) {
     $('#add')
         .off()
         .on("click", function (e) {
-            onAddTrees(1, map.getCenter());
+            onAddTrees($('#size label.active input').prop('id'), map.getCenter());
         });
 });
 $('body').on('main', function (e) {
@@ -357,4 +357,9 @@ $('body').on('edit', function (e, feature) {
         .on("click", function (e) {
             onAssignTrees(feature._id, $('select#user').val());
         });
+    console.log(feature.properties.size);
+    $('#editSize')
+        .prop('aria-valuenow', feature.properties.size)
+        .css('width', feature.properties.size * 33 + '%')
+        .html(feature.properties.size);
 });
