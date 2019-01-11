@@ -14,6 +14,8 @@
 - [x] auswahl haufengröße
 - [x] benachrichtigungen automatisch ausblenden
 - [x] button um zu gebiet zurück zu kehren
+### Future
+- [ ] Haufengröße nach hinzufügen ändern
 
 # Installation
 ## Node.js
