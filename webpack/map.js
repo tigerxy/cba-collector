@@ -152,7 +152,7 @@ function loadAreas(geojson) {
 
 function splitAndAddToLayerGroup(layerGroup, data) {
     data.forEach(item => {
-        layerGroup[(true == item.properties.yours || secLevel > 1) * 1].addData(item);
+        layerGroup[(true == item.properties.yours || secLevel > 2) * 1].addData(item);
     });
 }
 
