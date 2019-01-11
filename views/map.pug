@@ -88,13 +88,13 @@ block content
       h5 Haufen eintragen
       .form-group
         label(for='size') Bitte Größe auswählen
-        br
-        p klein: weniger als 8 Bäume; mittel: 8-15 Bäume; groß: mehr als 15 Bäume
-        br
         #size.btn-group.btn-group-toggle(data-toggle='buttons')
           +radio-button(1,true) 木
           +radio-button(2) 林
           +radio-button(3) 森  
+        p 木: weniger als 8 Bäume
+        p 林: 8-15 Bäume
+        p 森: mehr als 15 Bäume
       .btn-group(role='group')
         button.openDialog.btn.btn-lg.btn-secondary(type='button',open='main') Abbrechen      
         button#add.btn.btn-lg.btn-primary(type='button') Hinzufügen
