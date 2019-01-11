@@ -1,25 +1,25 @@
 var createError = require('http-errors');
 var express = require('express');
 var router = express.Router();
-var ShareDB = require('sharedb');
+// var ShareDB = require('sharedb');
 //var ShareDBMongo = require('sharedb-mongo');
 //var sharedb = new ShareDB({db: ShareDBMongo('mongodb://roland:8QA2G2BzvMMNFMUw@clustercba-shard-00-00-pvsux.mongodb.net:27017,clustercba-shard-00-01-pvsux.mongodb.net:27017,clustercba-shard-00-02-pvsux.mongodb.net:27017/cba')});
 /*const db = require('sharedb-mongo')('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba', { useNewUrlParser: true });
 var share = new ShareDB({ db });*/
 
-var MongoClient = require('mongodb').MongoClient;
-const uri = 'mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba';
-const db = require('sharedb-mongo')({
-    mongo: function (callback) {
-        const client = new MongoClient(uri, { useNewUrlParser: true });
-        client.connect(err => {
-            console.log(err);
-            callback(err, client.db("cba"));
-        });
-    }
-});
-const share = new ShareDB({ db });
-var WebSocketJSONStream = require('websocket-json-stream');
+// var MongoClient = require('mongodb').MongoClient;
+// const uri = 'mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba';
+// const db = require('sharedb-mongo')({
+//     mongo: function (callback) {
+//         const client = new MongoClient(uri, { useNewUrlParser: true });
+//         client.connect(err => {
+//             console.log(err);
+//             callback(err, client.db("cba"));
+//         });
+//     }
+// });
+// const share = new ShareDB({ db });
+// var WebSocketJSONStream = require('websocket-json-stream');
 var User = require('../model/user');
 var Area = require('../model/area');
 var TreeSpot = require('../model/treeSpot');
@@ -151,11 +151,11 @@ router.get('/user/collectors', requireAdmin, function (req, res, next) {
     });
 });
 
-router.ws('/ws', function (ws, req) {
-    // 'ws' is a websocket server connection, as passed into
-    // new (require('ws').Server).on('connection', ...)
-    var stream = new WebSocketJSONStream(ws);
-    share.listen(stream);
-});
+// router.ws('/ws', function (ws, req) {
+//     // 'ws' is a websocket server connection, as passed into
+//     // new (require('ws').Server).on('connection', ...)
+//     var stream = new WebSocketJSONStream(ws);
+//     share.listen(stream);
+// });
 
 module.exports = router;

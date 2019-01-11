@@ -1,20 +1,20 @@
-var ShareDB = require('sharedb/lib/client');
-//var WebSocket = require('reconnecting-websocket');
-import ReconnectingWebSocket from 'reconnecting-websocket';
-var socket = new ReconnectingWebSocket('ws://localhost/api/ws');
-var connection = new ShareDB.Connection(socket);
-/*connection.createSubscribeQuery('treespots', {}, {}, (err, results) => {
-    console.log(results);
-})*/
+// var ShareDB = require('sharedb/lib/client');
+// //var WebSocket = require('reconnecting-websocket');
+// import ReconnectingWebSocket from 'reconnecting-websocket';
+// var socket = new ReconnectingWebSocket('ws://localhost/api/ws');
+// var connection = new ShareDB.Connection(socket);
+// /*connection.createSubscribeQuery('treespots', {}, {}, (err, results) => {
+//     console.log(results);
+// })*/
 
-var query = connection.createSubscribeQuery('treespots', {});
-query.on('ready', update);
-query.on('changed', update);
-query.on('insert', update);
+// var query = connection.createSubscribeQuery('treespots', {});
+// query.on('ready', update);
+// query.on('changed', update);
+// query.on('insert', update);
 
-function update() {
-    console.log(query.results);
-}
+// function update() {
+//     console.log(query.results);
+// }
 
 //-------------------------------------
 // Map
@@ -159,17 +159,20 @@ function splitAndAddToLayerGroup(layerGroup, data) {
 function loadTrees(geojson, time = 0) {
     $.getJSON("/api/tree?time=" + time, function () { })
         .done(function (data) {
-            console.log(data);
-            data.length > 0 ? splitAndAddToLayerGroup(geojson, data) : 0;
+            if (data.length > 0) {
+                console.log(data);
+                $('body').trigger('update', data[0]);
+                splitAndAddToLayerGroup(geojson, data);
+            }
         })
         .fail(function (err) {
             console.error(err.message);
         })
         .always(function () {
             time = Date.now();
-            /*setTimeout(function () {
+            setTimeout(function () {
                 loadTrees(geojson, time)
-            }, 30000);*/
+            }, 10000);
         });
 }
 
@@ -246,6 +249,12 @@ var formatMarker = function (feature, latlng) {
 var formatFeature = function onEachFeature(feature, layer) {
     //layer.bindPopup(feature.properties.creator);
     layer.on('click', function () { openDialog('edit', feature); });
+    $('body').on('update', function (e, changeFeature) {
+        if (changeFeature._id == feature._id) {
+            feature = changeFeature;
+            console.log('My ID is ' + changeFeature._id);
+        }
+    })
 }
 
 var myAreasLayerGroup = L.geoJSON([], {

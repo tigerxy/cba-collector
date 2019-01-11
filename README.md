@@ -3,18 +3,18 @@
 # TODO
 - [ ] hilfe (uta)
 - [ ] größen beschreiben (uta)
-- [ ] automatisch haufen auf karte aktuallisieren (roland)
 - [ ] zurücksetzen button für admin (roland)
-- [ ] user in status anzeigen (roland)
 - [ ] Haufen -> Baumhaufen umbenennen
 - [ ] Verschieben erklären
 - [ ] LKW Fahrer Haufen filtern nach zugewiesen
+- [x] automatisch haufen auf karte aktuallisieren (roland)
 - [x] Haufengröße default auf Mittel setzen
 - [x] tooltip gebietname
 - [x] auswahl haufengröße
 - [x] benachrichtigungen automatisch ausblenden
 - [x] button um zu gebiet zurück zu kehren
 ### Future
+- [ ] user in status anzeigen (roland)
 - [ ] Haufengröße nach hinzufügen ändern
 
 # Installation
