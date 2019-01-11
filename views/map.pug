@@ -17,6 +17,19 @@ block content
           p Hilfetext
         .modal-footer
           button.btn.btn-primary(type="button",data-dismiss="modal") Schließen
+  #settingsModal.modal.fade(role="dialog")
+    .modal-dialog(role="document")
+      .modal-content
+        .modal-header
+          h5.modal-title Einstellungen
+          button.close(type="button",aria-label="Close",data-dismiss="modal")
+            span(aria-hidden="true") &times;
+        .modal-body
+          .form-check
+            input#flyto.form-check-input(type="checkbox",checked)
+            label.form-check-label(for="flyto") Flyto aktivieren
+        .modal-footer
+          button.btn.btn-primary(type="button",data-dismiss="modal") Schließen
   #full.d-flex.flex-column.flex-sm-column.flex-md-column.flex-lg-row.flex-xl-row.align-items-stretch
     .flex-grow-1(style="position:relative;")
       #map(style="position:absolute;")

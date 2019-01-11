@@ -187,6 +187,7 @@ function onLocationFound(e) {
 }
 
 function onLocationError(e) {
+    map.locate({ watch: true, enableHighAccuracy: false });
     console.error(e.message);
     //alert('danger', 'Position konnte nicht ermittelt werden.');
 }
@@ -306,6 +307,10 @@ L.easyButton('fa-question', function (btn, map) {
     $('#helpModal').modal('show');
 }).addTo(map);
 
+L.easyButton('fa-cog', function (btn, map) {
+    $('#settingsModal').modal('show');
+}).addTo(map);
+
 loadAreas([areasLayerGroup, myAreasLayerGroup]);
 loadTrees([treeLayerGroup, myTreeLayerGroup]);
 
@@ -341,7 +346,9 @@ function onOpenDialog(e) {
 $('.openDialog').on("click", onOpenDialog);
 $('body').on('add', function (e) {
     cross.setVisible(true);
-    map.flyTo(gpsPosition.getLatLng());
+    if ($('#flyto').prop('checked')) {
+        map.flyTo(gpsPosition.getLatLng());
+    }
     $('#size label').removeClass('active');
     $('#size label:nth-child(2)').addClass('active');
     $('#add')
