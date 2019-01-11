@@ -3,9 +3,18 @@ var ShareDB = require('sharedb/lib/client');
 import ReconnectingWebSocket from 'reconnecting-websocket';
 var socket = new ReconnectingWebSocket('ws://localhost/api/ws');
 var connection = new ShareDB.Connection(socket);
-connection.createSubscribeQuery('treespots', {}, {}, (err, results) => {
+/*connection.createSubscribeQuery('treespots', {}, {}, (err, results) => {
     console.log(results);
-})
+})*/
+
+var query = connection.createSubscribeQuery('treespots', {});
+query.on('ready', update);
+query.on('changed', update);
+query.on('insert', update);
+
+function update() {
+    console.log(query.results);
+}
 
 //-------------------------------------
 // Map
@@ -158,9 +167,9 @@ function loadTrees(geojson, time = 0) {
         })
         .always(function () {
             time = Date.now();
-            setTimeout(function () {
+            /*setTimeout(function () {
                 loadTrees(geojson, time)
-            }, 30000);
+            }, 30000);*/
         });
 }
 

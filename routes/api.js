@@ -2,8 +2,23 @@ var createError = require('http-errors');
 var express = require('express');
 var router = express.Router();
 var ShareDB = require('sharedb');
-const db = require('sharedb-mongo')('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba');
-var share = new ShareDB({db});
+//var ShareDBMongo = require('sharedb-mongo');
+//var sharedb = new ShareDB({db: ShareDBMongo('mongodb://roland:8QA2G2BzvMMNFMUw@clustercba-shard-00-00-pvsux.mongodb.net:27017,clustercba-shard-00-01-pvsux.mongodb.net:27017,clustercba-shard-00-02-pvsux.mongodb.net:27017/cba')});
+/*const db = require('sharedb-mongo')('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba', { useNewUrlParser: true });
+var share = new ShareDB({ db });*/
+
+var MongoClient = require('mongodb').MongoClient;
+const uri = 'mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba';
+const db = require('sharedb-mongo')({
+    mongo: function (callback) {
+        const client = new MongoClient(uri, { useNewUrlParser: true });
+        client.connect(err => {
+            console.log(err);
+            callback(err, client.db("cba"));
+        });
+    }
+});
+const share = new ShareDB({ db });
 var WebSocketJSONStream = require('websocket-json-stream');
 var User = require('../model/user');
 var Area = require('../model/area');
