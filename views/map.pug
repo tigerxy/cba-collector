@@ -4,27 +4,6 @@ block head
     link(rel="stylesheet",href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css")
     link(rel="stylesheet",href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css")
     link(rel="stylesheet",href="https://use.fontawesome.com/releases/v5.6.3/css/all.css")
-    script(src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js")
-    script(src="/javascripts/leaflet.CenterCross.js")
-    script(src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js")
-    style.
-      html,body,#full {
-        padding: 0px;
-        margin: 0px;
-        height: 100%;
-      }
-      #mainDialog {
-        flex-basis: auto;
-      }
-      .dialog {
-        padding: 10px;
-        transition: flex-basis 200ms ease-in-out;
-        min-width: 20%;
-      }
-      .inactive {
-        flex-basis: 0px;
-        display: none;
-      }
 
 block content
   #helpModal.modal.fade(role="dialog")
@@ -86,6 +65,9 @@ block content
   .fixed-top
     #alert
 
-  script const token = '#{token}';
-  script const secLevel = '#{permissionLevel}';
-  script(src='/javascripts/map.js')
+    script const token = '#{token}';
+    script const secLevel = '#{permissionLevel}';
+    script(src='/javascripts/map.js')
+    //script(src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js")
+    //script(src="/javascripts/leaflet.CenterCross.js")
+    script(src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js")

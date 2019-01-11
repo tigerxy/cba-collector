@@ -1,6 +1,10 @@
 var createError = require('http-errors');
 var express = require('express');
 var router = express.Router();
+var ShareDB = require('sharedb');
+const db = require('sharedb-mongo')('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba');
+var share = new ShareDB({db});
+var WebSocketJSONStream = require('websocket-json-stream');
 var User = require('../model/user');
 var Area = require('../model/area');
 var TreeSpot = require('../model/treeSpot');
@@ -132,46 +136,11 @@ router.get('/user/collectors', requireAdmin, function (req, res, next) {
     });
 });
 
-// router.ws('/ws', function (ws, req) {
-//     /*console.log('Websocket connected');
-//     ws.on('open', function (ws) {
-//         console.log('connected');
-//         TreeSpot.watch().on('change', data => ws.send(data));
-//     });
-//     ws.on('message', function (ws, msg) {
-//         console.log(Date.now().toLocaleString(), msg);
-//     });*/
-//     //TreeSpot.watch().on('change', data => ws.send(data));
-//     //ws.on(, function (ws) {
-//     //TreeSpot.addWebsocket(function (data) { ws.send(data); });
-//     Area.list(function (err, areas) {
-//         ws.send(JSON.stringify(areas.map(obj => {
-//             return {
-//                 "operationType": "insert",
-//                 "fullDocument": obj,
-//                 "ns": {
-//                     "db": "cba",
-//                     "coll": "areas"
-//                 }
-//             }
-//         })));
-//     });
-//     TreeSpot.list(0, function (err, treespots) {
-//         ws.send(JSON.stringify(treespots.map(obj => {
-//             return {
-//                 "operationType": "insert",
-//                 "fullDocument": obj,
-//                 "ns": {
-//                     "db": "cba",
-//                     "coll": "treespots"
-//                 }
-//             }
-//         })));
-//     });
-//     //});
-//     ws.on('message', function (msg) {
-//         ws.send(msg);
-//     });
-// });
+router.ws('/ws', function (ws, req) {
+    // 'ws' is a websocket server connection, as passed into
+    // new (require('ws').Server).on('connection', ...)
+    var stream = new WebSocketJSONStream(ws);
+    share.listen(stream);
+});
 
 module.exports = router;
