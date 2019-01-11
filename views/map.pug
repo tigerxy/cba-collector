@@ -14,43 +14,56 @@ block content
           button.close(type="button",aria-label="Close",data-dismiss="modal")
             span(aria-hidden="true") &times;
         .modal-body
-          h1 Allgemeine Hilfe
-          br
-          h2 Ansicht zurücksetzen
-          p Um die Ansicht auf den Ausgangspunkt, die Gebietsübersicht, zurückzusetzen, muss der Button in der linken oberen Ecke über der Hilfe gedrückt werden.
-          br
-          h2 Verschiedene Ansichten ein-/ausblenden
-          p In der oberen rechten Ecke können die Umrandungen der Gebiete und die eingetragenen Baumhaufen der verschiedenen Gruppen ein- und ausgeschaltet werden.
-          br
-          h2 Einstellungen
-          p In der oberen rechten Ecke unter der Hilfefunktion bei dem Zahnradsymbol sind die Einstellungen, in denen man zur Zeit nur ein und ausschalten kann, ob beim Hinzufügen eines neuen Baumhaufens das Fadenkreuz automatisch an die aktuelle Position springt.
-          br
-          h1 Hilfe für Baumsammler
-          br
-          h2 Hinzufügen
-          p Zum Hinzufügen von einem neuen Baumhaufen den blauen Button „Haufen eintragen“ am unteren Rand drücken. Danach Überprüfen, ob das erschienene Fadenkreuz an der richtigen Position ist. Anschließend die ungefähre Baumgröße angeben:
-          p - 木: kleiner Baumhaufen mit weniger als 8 Bäumen
-          p - 林: mittlerer Baumhaufen mit zwischen 8 und 15 Bäumen
-          p - 森: großer Baumhaufen mit mehr als 15 Bäumen
-          p Zuletzt den grünen Button „Hinzufügen“ drücken. Danach sollte ein roter Baum in der Karte erscheinen. Falls nicht sofort ein Symbol angezeigt werden sollte, die Seite neu laden oder kurz warten.
-          p Wenn die Größe im nach hinein geändert werden soll, bitte einen neuen Baumhaufen eintragen und den alten löschen.
-          br
-          h2 Löschen
-          p Um einen falsch hinzugefügten oder verschobenen Baumhaufen zu löschen, das entsprechende Symbol in der Karte anklicken und „Löschen“ drücken. Anschließend verschwindet das Symbol nicht, sondern wird nur grau markiert, damit nichts unbeabsichtigt gelöscht werden kann. Diese grau markierten Bäume können in der Zentrale, beim Abgeben der Gebiete, endgültig nach Absprache gelöscht oder wiederhergestellt werden.
-          br
-          h1 Hilfe für LKW-(Mit-)Fahrer
-          br
-          h2 Abgeholt
-          p Wenn ein Baumhaufen mit dem LKW abgeholt wurde, das entsprechende Symbol anklicken und „Abgeholt“ drücken. Damit wird das Symbol grün. Falls ein Baumhaufen nicht vorhanden ist, trotzdem das Symbol auf „Abgeholt“ setzen.
-          br
-          h2 Hinzufügen
-          p Falls beim Herumfahren noch Baumhaufen auffallen, die nicht eingetragen sind, können diese auch noch hinzugefügt werden.
-          p Zum Hinzufügen von einem neuen Baumhaufen den blauen Button „Hinzufügen“ am unteren Rand drücken. Danach Überprüfen, ob das erschienene Fadenkreuz an der richtigen Position ist. Anschließend die ungefähre Baumgröße angeben:
-          p - 木: kleiner Baumhaufen mit weniger als 8 Bäumen
-          p - 林: mittlerer Baumhaufen mit zwischen 8 und 15 Bäumen
-          p - 森: großer Baumhaufen mit mehr als 15 Bäumen
-          p Zuletzt den grünen Button „Hinzufügen“ drücken. Danach sollte ein roter Baum in der Karte erscheinen. Falls nicht sofort ein Symbol angezeigt werden sollte, die Seite neu laden oder kurz warten.
-                    
+          #accordion
+            .card
+              #headingOne.card-header
+                h5.mb-0
+                  button.btn.btn-link(data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+                    | Allgemeine Hilfe
+              #collapseOne.collapse.show(aria-labelledby='headingOne' data-parent='#accordion')
+                .card-body
+                  h2 Ansicht zurücksetzen
+                  p Um die Ansicht auf den Ausgangspunkt, die Gebietsübersicht, zurückzusetzen, muss der Button in der linken oberen Ecke über der Hilfe gedrückt werden.
+                  br
+                  h2 Verschiedene Ansichten ein-/ausblenden
+                  p In der oberen rechten Ecke können die Umrandungen der Gebiete und die eingetragenen Baumhaufen der verschiedenen Gruppen ein- und ausgeschaltet werden.
+                  br
+                  h2 Einstellungen
+                  p In der oberen rechten Ecke unter der Hilfefunktion bei dem Zahnradsymbol sind die Einstellungen, in denen man zur Zeit nur ein und ausschalten kann, ob beim Hinzufügen eines neuen Baumhaufens das Fadenkreuz automatisch an die aktuelle Position springt.
+            .card
+              #headingTwo.card-header
+                h5.mb-0
+                  button.btn.btn-link.collapsed(data-toggle='collapse' data-target='#collapseTwo' aria-expanded='false' aria-controls='collapseTwo')
+                    | Hilfe für Baumsammler
+              #collapseTwo.collapse(aria-labelledby='headingTwo' data-parent='#accordion')
+                .card-body
+                  h2 Hinzufügen
+                  p Zum Hinzufügen von einem neuen Baumhaufen den blauen Button „Haufen eintragen“ am unteren Rand drücken. Danach Überprüfen, ob das erschienene Fadenkreuz an der richtigen Position ist. Anschließend die ungefähre Baumgröße angeben:
+                  p - 木: kleiner Baumhaufen mit weniger als 8 Bäumen
+                  p - 林: mittlerer Baumhaufen mit zwischen 8 und 15 Bäumen
+                  p - 森: großer Baumhaufen mit mehr als 15 Bäumen
+                  p Zuletzt den grünen Button „Hinzufügen“ drücken. Danach sollte ein roter Baum in der Karte erscheinen. Falls nicht sofort ein Symbol angezeigt werden sollte, die Seite neu laden oder kurz warten.
+                  p Wenn die Größe im nach hinein geändert werden soll, bitte einen neuen Baumhaufen eintragen und den alten löschen.
+                  br
+                  h2 Löschen
+                  p Um einen falsch hinzugefügten oder verschobenen Baumhaufen zu löschen, das entsprechende Symbol in der Karte anklicken und „Löschen“ drücken. Anschließend verschwindet das Symbol nicht, sondern wird nur grau markiert, damit nichts unbeabsichtigt gelöscht werden kann. Diese grau markierten Bäume können in der Zentrale, beim Abgeben der Gebiete, endgültig nach Absprache gelöscht oder wiederhergestellt werden.
+            .card
+              #headingThree.card-header
+                h5.mb-0
+                  button.btn.btn-link.collapsed(data-toggle='collapse' data-target='#collapseThree' aria-expanded='false' aria-controls='collapseThree')
+                    | Hilfe für LKW-(Mit-)Fahrer
+              #collapseThree.collapse(aria-labelledby='headingThree' data-parent='#accordion')
+                .card-body
+                  h2 Abgeholt
+                  p Wenn ein Baumhaufen mit dem LKW abgeholt wurde, das entsprechende Symbol anklicken und „Abgeholt“ drücken. Damit wird das Symbol grün. Falls ein Baumhaufen nicht vorhanden ist, trotzdem das Symbol auf „Abgeholt“ setzen.
+                  br
+                  h2 Hinzufügen
+                  p Falls beim Herumfahren noch Baumhaufen auffallen, die nicht eingetragen sind, können diese auch noch hinzugefügt werden.
+                  p Zum Hinzufügen von einem neuen Baumhaufen den blauen Button „Hinzufügen“ am unteren Rand drücken. Danach Überprüfen, ob das erschienene Fadenkreuz an der richtigen Position ist. Anschließend die ungefähre Baumgröße angeben:
+                  p - 木: kleiner Baumhaufen mit weniger als 8 Bäumen
+                  p - 林: mittlerer Baumhaufen mit zwischen 8 und 15 Bäumen
+                  p - 森: großer Baumhaufen mit mehr als 15 Bäumen
+                  p Zuletzt den grünen Button „Hinzufügen“ drücken. Danach sollte ein roter Baum in der Karte erscheinen. Falls nicht sofort ein Symbol angezeigt werden sollte, die Seite neu laden oder kurz warten.        
         .modal-footer
           button.btn.btn-primary(type="button",data-dismiss="modal") Schließen
   #settingsModal.modal.fade(role="dialog")
