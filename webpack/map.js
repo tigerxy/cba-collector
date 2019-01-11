@@ -282,7 +282,7 @@ var treeLayerGroup = L.geoJSON([], {
 //var allTrees = L.layerGroup([treePosition]);
 L.control.layers({},
     {
-        "Mein Gebiete": myAreasLayerGroup,
+        "Mein Gebiet": myAreasLayerGroup,
         "Andere Gebiete": areasLayerGroup,
         "Meine Bäume": myTreeLayerGroup,
         "Andere Bäume": treeLayerGroup
