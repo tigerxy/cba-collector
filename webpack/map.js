@@ -342,6 +342,8 @@ $('.openDialog').on("click", onOpenDialog);
 $('body').on('add', function (e) {
     cross.setVisible(true);
     map.flyTo(gpsPosition.getLatLng());
+    $('#size label').removeClass('active');
+    $('#size label:nth-child(2)').addClass('active');
     $('#add')
         .off()
         .on("click", function (e) {
