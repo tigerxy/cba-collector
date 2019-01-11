@@ -6,6 +6,10 @@
 - [ ] automatisch haufen auf karte aktuallisieren (roland)
 - [ ] zurücksetzen button für admin (roland)
 - [ ] user in status anzeigen (roland)
+- [ ] Haufen -> Baumhaufen umbenennen
+- [ ] Verschieben erklären
+- [ ] Haufengröße default auf Mittel setzen
+- [ ] LKW Fahrer Haufen filtern nach zugewiesen
 - [x] tooltip gebietname
 - [x] auswahl haufengröße
 - [x] benachrichtigungen automatisch ausblenden
