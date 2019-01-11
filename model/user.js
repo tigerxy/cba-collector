@@ -30,6 +30,12 @@ exports.list = function list(callback) {
     u.admin = true;
     u.description = 'Test Admin Roland';
     u.save();*/
+    // for (let i = 1; i <= 20; i++) {
+    //     var u = new User();
+    //     u.name = "LKW "+i;
+    //     u.collector = true;
+    //     u.save();
+    // }
     User.find({}, {
         //token: 0 // exclude token
     }, function (err, res) {
