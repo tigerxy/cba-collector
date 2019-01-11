@@ -85,16 +85,16 @@ block content
     #mainDialog.flex-grow-0.dialog
       button.openDialog.btn.btn-lg.btn-primary.btn-block(type='button',open='add') Haufen eintragen
     #addDialog.flex-grow-0.dialog.inactive
-      h5 Haufen eintragen
       .form-group
         label(for='size') Bitte Größe auswählen
+        br
         #size.btn-group.btn-group-toggle(data-toggle='buttons')
           +radio-button(1,true) 木
           +radio-button(2) 林
           +radio-button(3) 森  
-        p 木: weniger als 8 Bäume
-        p 林: 8-15 Bäume
-        p 森: mehr als 15 Bäume
+        span 木: weniger als 8 Bäume
+        span 林: 8-15 Bäume
+        span 森: mehr als 15 Bäume
       .btn-group(role='group')
         button.openDialog.btn.btn-lg.btn-secondary(type='button',open='main') Abbrechen      
         button#add.btn.btn-lg.btn-primary(type='button') Hinzufügen
