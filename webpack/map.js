@@ -161,8 +161,10 @@ function loadTrees(geojson, time = 0) {
         .done(function (data) {
             if (data.length > 0) {
                 console.log(data);
-                $('body').trigger('update', data[0]);
                 splitAndAddToLayerGroup(geojson, data);
+                data.forEach(t => {
+                    $('body').trigger('update', t);
+                });
             }
         })
         .fail(function (err) {
