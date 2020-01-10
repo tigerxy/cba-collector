@@ -380,7 +380,7 @@ $('body').on('edit', function (e, feature) {
     var status = feature.properties.status;
     status.forEach(state => {
         var d = new Date(state.time);
-        log.append('<tr><td>' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + '</td><td>' + state.action + '</td></tr>');
+        log.append('<tr><td>' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + '</td><td>' + state.message + '</td></tr>');
     });
     if (secLevel < 3 && status[status.length - 1].action != 'add') {
         $('#delete').prop('disabled', true);
