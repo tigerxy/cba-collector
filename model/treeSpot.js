@@ -10,7 +10,7 @@ exports.add = function add(user, size, coordinates, callback) {
             status: [{
                 user: user._id,
                 time: Date.now(),
-                message: '"' + user.name + '" added treespot',
+                message: '<i>' + user.name + '</i> added treespot',
                 action: 'add'
             }]
         }
@@ -35,7 +35,7 @@ exports.collect = function collect(id, user, callback) {
                 {
                     user: user._id,
                     time: Date.now(),
-                    message: '"' + user.name + '" collected treespot',
+                    message: '<i>' + user.name + '</i> collected treespot',
                     action: 'collected'
                 }
             );
@@ -58,7 +58,7 @@ exports.assign = function assign(id, user, userid, callback) {
                     {
                         user: user._id,
                         time: Date.now(),
-                        message: '"' + user.name + '" assigned treespot to "' + assigneduser.name + '"',
+                        message: '<i>' + user.name + '</i> assigned treespot to <i>' + assigneduser.name + '</i>',
                         action: 'assigned'
                     }
                 );
@@ -113,7 +113,7 @@ exports.remove = function remove(id, user, callback) {
                 'properties.status': {
                     user: user._id,
                     time: Date.now(),
-                    message: '"' + user.name + '" removed treespot',
+                    message: '<i>' + user.name + '</i> removed treespot',
                     action: 'remove'
                 }
             }
