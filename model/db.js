@@ -41,7 +41,7 @@ var userSchema = new mongoose.Schema({
 mongoose.model('User', userSchema);
 mongoose.model('Area', areaSchema);
 var tree = mongoose.model('TreeSpot', treeSpotSchema);
-mongoose.connect('mongodb+srv://roland:8QA2G2BzvMMNFMUw@clustercba-pvsux.mongodb.net/cba');
+mongoose.connect(process.env.MONGODB_CONN_STR);
 
 var e = new events.EventEmitter();
 tree.watch().on('change', function (data) {

@@ -1,22 +1,5 @@
 # cba-collector
 
-# TODO
-- [ ] zurücksetzen button für admin (roland)
-- [ ] größen beschreiben (uta)
-- [x] hilfe (uta)
-- [x] Haufen -> Baumhaufen umbenennen
-- [x] Verschieben erklären
-- [x] LKW Fahrer Haufen filtern nach zugewiesen
-- [x] automatisch haufen auf karte aktuallisieren (roland)
-- [x] Haufengröße default auf Mittel setzen
-- [x] tooltip gebietname
-- [x] auswahl haufengröße
-- [x] benachrichtigungen automatisch ausblenden
-- [x] button um zu gebiet zurück zu kehren
-### Future
-- [ ] user in status anzeigen (roland)
-- [ ] Haufengröße nach hinzufügen ändern
-
 # Installation
 ## Node.js
 Install packages
