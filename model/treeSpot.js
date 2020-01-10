@@ -59,8 +59,8 @@ exports.assign = function assign(id, user, userid, callback) {
                         action: '"' + user.name + '" assigned treespot to "' + assigneduser.name + '"'
                     }
                 );
+                tree.save(callback);
             })
-            tree.save(callback);
         }
     });
 };
