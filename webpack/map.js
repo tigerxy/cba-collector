@@ -359,9 +359,8 @@ $('body').on('add', function (e) {
     cross.setVisible(true);
     if ($('#flyto').prop('checked')) {
         var gps = gpsPosition.getLatLng();
-        console.log(gps.lat,gps.lon,gps);
-        if (gps.lat > 49.6 && gps.lat < 49.8 && gps.lon > 11.0 && gps.lon < 11.2) {
-            map.flyTo(gpsPosition.getLatLng());
+        if (gps.lat > 49.6 && gps.lat < 49.8 && gps.lng > 11.0 && gps.lng < 11.2) {
+            map.flyTo(gps);
         }
     }
     $('#size label').removeClass('active');
