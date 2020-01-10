@@ -10,7 +10,7 @@ exports.add = function add(user, size, coordinates, callback) {
             status: [{
                 user: user._id,
                 time: Date.now(),
-                action: 'add'
+                action: '"' + user.name + '" added treespot'
             }]
         }
     }, callback);
@@ -34,7 +34,7 @@ exports.collect = function collect(id, user, callback) {
                 {
                     user: user._id,
                     time: Date.now(),
-                    action: 'collected'
+                    action: '"' + user.name + '" collected treespot'
                 }
             );
             tree.save(callback);
@@ -44,19 +44,22 @@ exports.collect = function collect(id, user, callback) {
 
 exports.assign = function assign(id, user, userid, callback) {
     var TreeSpot = mongoose.model('TreeSpot');
+    var User = mongoose.model('User');
     TreeSpot.findById(id, function (err, tree) {
         if (err) {
             callback(err, tree);
         }
         else {
             tree.properties.collector = userid;
-            tree.properties.status.push(
-                {
-                    user: user._id,
-                    time: Date.now(),
-                    action: 'assigned'
-                }
-            );
+            User.findById(userid, function (err,assigneduser) {
+                tree.properties.status.push(
+                    {
+                        user: user._id,
+                        time: Date.now(),
+                        action: '"' + user.name + '" assigned treespot to "' + assigneduser.name + '"'
+                    }
+                );
+            })
             tree.save(callback);
         }
     });
@@ -107,7 +110,7 @@ exports.remove = function remove(id, user, callback) {
                 'properties.status': {
                     user: user._id,
                     time: Date.now(),
-                    action: 'remove'
+                    action: '"' + user.name + '" removed treespot'
                 }
             }
         },
