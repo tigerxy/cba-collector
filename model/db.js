@@ -27,6 +27,7 @@ var treeSpotSchema = new mongoose.Schema({
             {
                 user: mongoose.Schema.Types.ObjectId,
                 time: { type: Date, default: Date.now() },
+                message: String,
                 action: String
             }
         ]
