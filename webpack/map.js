@@ -358,7 +358,10 @@ $('.openDialog').on("click", onOpenDialog);
 $('body').on('add', function (e) {
     cross.setVisible(true);
     if ($('#flyto').prop('checked')) {
-        map.flyTo(gpsPosition.getLatLng());
+        var gps = gpsPosition.getLatLng();
+        if (gps.lat > 49.6 && gps.lat < 49.8 && gps.lon > 11.0 && gps.lon < 11.2) {
+            map.flyTo(gpsPosition.getLatLng());
+        }
     }
     $('#size label').removeClass('active');
     $('#size label:nth-child(2)').addClass('active');
