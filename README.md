@@ -1,4 +1,5 @@
 # cba-collector
+This node.js application is usefull to organize a group of people for collecting events. We use this to organize our pickers to collect the old christmas trees in Forchheim. The client is a simple webapplication, runs on every mobile device without installation. To get access as a picker, they can scan a printed QR-Code.
 
 # Installation
 ## Node.js
