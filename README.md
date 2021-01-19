@@ -1,5 +1,5 @@
 # cba-collector
-This node.js application is usefull to organize a group of people for collecting events. We use this to organize our pickers to collect the old christmas trees in Forchheim. The client is a simple webapplication, runs on every mobile device without installation. To get access as a picker, they can scan a printed QR-Code.
+This node.js application is useful to organize a group of people for collecting events. We use this to organize our pickers to collect the old christmas trees in Forchheim. The client is a simple webapplication, runs on every mobile device without installation. To get access as a picker, they can scan a printed QR-Code.
 
 # Installation
 ## Node.js
@@ -25,6 +25,8 @@ TODO: descripe DNS entrys
 
 ## SSH Key
 Generate with Let's Encrypt SSL key.
+
+Simpler solution without Docker could be the ```certbot``` program!
 
 Docker command:
 > sudo docker run -it --rm --name certbot -v "etcletsencrypt:/etc/letsencrypt" -v "libletsencrypt:/var/lib/letsencrypt" certbot/certbot certonly --manual --preferred-challenges dns
