@@ -1,30 +1,43 @@
 <script lang="ts">
-	export let name: string;
+  import AppBar from "./AppBar.svelte";
+  import Map from "./Map.svelte";
+  import AppDrawer from "./AppDrawer.svelte";
+
+  import "../node_modules/svelte-material-ui/bare.css";
+
+  let open = false;
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<svelte:head>
+  <!-- Material Icons -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
+  <!-- Roboto -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700"
+  />
+  <!-- Roboto Mono -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto+Mono"
+  />
+</svelte:head>
+
+<AppDrawer bind:open />
+
+<div class="app-content">
+  <AppBar bind:open />
+  <Map />
+  <main class="main-content" />
+</div>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  .app-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
 </style>

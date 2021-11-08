@@ -5,13 +5,17 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear",
+    "start": "sirv public --no-clear --host 0.0.0.0",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
+    "@smui/button": "^5.0.0-beta.8",
+    "@smui/icon-button": "^5.0.0-beta.8",
+    "@smui/list": "^5.0.0-beta.8",
+    "@smui/top-app-bar": "^5.0.0-beta.8",
     "@tsconfig/svelte": "^2.0.0",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
@@ -25,9 +29,11 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
+    "@types/geojson": "^7946.0.8",
     "@types/leaflet": "^1.7.5",
     "leaflet": "^1.7.1",
     "realm-web": "^1.4.0",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "svelte-material-ui": "^5.0.0-beta.8"
   }
 }
