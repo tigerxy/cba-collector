@@ -8,11 +8,16 @@
   } from "@smui/drawer";
   import List, { Item, Text, Graphic, Separator, Subheader } from "@smui/list";
   import { H6 } from "@smui/common/elements";
+  import { logout } from "../store/auth";
 
   export let open = false;
   let active = "Inbox";
   function setActive(value: string) {
     active = value;
+    open = false;
+  }
+  function logoutAndClose() {
+    logout();
     open = false;
   }
 </script>
@@ -84,6 +89,11 @@
       >
         <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
         <Text>Work</Text>
+      </Item>
+      <Separator />
+      <Item on:click={logoutAndClose}>
+        <Graphic class="material-icons" aria-hidden="true">logout</Graphic>
+        <Text>Abmelden</Text>
       </Item>
     </List>
   </Content>

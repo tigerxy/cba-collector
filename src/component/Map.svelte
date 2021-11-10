@@ -1,5 +1,5 @@
 <script>
-  import "../node_modules/leaflet/dist/leaflet.css";
+  import "../../node_modules/leaflet/dist/leaflet.css";
   import L from "leaflet";
   import { setContext, onMount } from "svelte";
 
@@ -12,8 +12,9 @@
 
   let gpsPosition = L.circle([51, 9], { radius: 1500000 });
   gpsPosition.addTo(map);
-  
-  map.locate({ watch: true, enableHighAccuracy: true });
+
+  // TODO: Enable GPS
+  //map.locate({ watch: true, enableHighAccuracy: true });
 
   map.on("locationfound", (e) => {
     let radius = e.accuracy / 2;
@@ -21,10 +22,11 @@
     gpsPosition.setLatLng(e.latlng);
     gpsPosition.setRadius(radius);
   });
-  
+
   map.on("locationerror", (e) => {
-    map.locate({ watch: true, enableHighAccuracy: false });
-    console.error(e.message);
+    // TODO: Enable GPS
+    //map.locate({ watch: true, enableHighAccuracy: false });
+    //console.error(e.message);
   });
 
   setContext("leafletMapInstance", map);
