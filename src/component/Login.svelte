@@ -10,19 +10,26 @@
   import * as Realm from "realm-web";
   import { realmUser } from "../store/auth";
 
-  async function doLogin() {
-    const credentials = Realm.Credentials.emailPassword(email, password);
-    try {
-      // Authenticate the user
-      const user: Realm.User = await app.logIn(credentials);
+  Realm.handleAuthRedirect();
+
+  const redirectUri = "http://0.0.0.0:5000/";
+
+  const completeLogin = (credentials: Realm.Credentials<any>) => {
+    app.logIn(credentials).then((user: Realm.User) => {
       realmUser.set(user);
       console.log(`Successfully loggedin with user ${user.id}`);
-    } catch (err) {
-      console.error("Failed to log in", err);
-      invalid = true;
-    }
-  }
-  let login = null;
+    });
+  };
+
+  const doLoginWithGoogle = () =>
+    completeLogin(Realm.Credentials.google(redirectUri));
+
+  const doLoginWithFacebook = () =>
+    completeLogin(Realm.Credentials.facebook(redirectUri));
+
+  const doLogin = () =>
+    completeLogin(Realm.Credentials.emailPassword(email, password));
+
   let email = "";
   let password = "";
   let invalid = false;
@@ -34,19 +41,13 @@
   <Paper class="paper-demo">
     <Title>Login</Title>
     <Content>
-      <Button variant="raised">
+      <Button variant="raised" on:click={doLoginWithGoogle}>
         <Icon component={Svg} viewBox="0 0 24 24">
           <path fill="currentColor" d={mdiGoogle} />
         </Icon>
         <Label>Google</Label>
       </Button>
-      <Button variant="raised">
-        <Icon component={Svg} viewBox="0 0 24 24">
-          <path fill="currentColor" d={mdiApple} />
-        </Icon>
-        <Label>Apple</Label>
-      </Button>
-      <Button variant="raised">
+      <Button variant="raised" on:click={doLoginWithFacebook}>
         <Icon component={Svg} viewBox="0 0 24 24">
           <path fill="currentColor" d={mdiFacebook} />
         </Icon>
