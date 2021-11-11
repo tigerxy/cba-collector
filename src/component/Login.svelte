@@ -1,12 +1,14 @@
 <script lang="ts">
-  import * as Realm from "realm-web";
-  import Paper, { Title, Subtitle, Content } from "@smui/paper";
-  import Fab, { Label } from "@smui/fab";
+  import { mdiApple, mdiFacebook, mdiGoogle } from "@mdi/js";
+  import Button from "@smui/button";
   import { Icon } from "@smui/common";
+  import { Svg } from "@smui/common/elements";
+  import Fab, { Label } from "@smui/fab";
+  import { Separator } from "@smui/list";
+  import Paper, { Content, Title } from "@smui/paper";
   import Textfield from "@smui/textfield";
-
+  import * as Realm from "realm-web";
   import { realmUser } from "../store/auth";
-import { Separator } from "@smui/list";
 
   async function doLogin() {
     const credentials = Realm.Credentials.emailPassword(email, password);
@@ -32,30 +34,24 @@ import { Separator } from "@smui/list";
   <Paper class="paper-demo">
     <Title>Login</Title>
     <Content>
-      <Fab
-        on:click={doLogin}
-        disabled={email === "" || password === ""}
-        color="primary"
-        extended
-      >
+      <Button variant="raised">
+        <Icon component={Svg} viewBox="0 0 24 24">
+          <path fill="currentColor" d={mdiGoogle} />
+        </Icon>
         <Label>Google</Label>
-      </Fab>
-      <Fab
-        on:click={doLogin}
-        disabled={email === "" || password === ""}
-        color="primary"
-        extended
-      >
+      </Button>
+      <Button variant="raised">
+        <Icon component={Svg} viewBox="0 0 24 24">
+          <path fill="currentColor" d={mdiApple} />
+        </Icon>
         <Label>Apple</Label>
-      </Fab>
-      <Fab
-        on:click={doLogin}
-        disabled={email === "" || password === ""}
-        color="primary"
-        extended
-      >
+      </Button>
+      <Button variant="raised">
+        <Icon component={Svg} viewBox="0 0 24 24">
+          <path fill="currentColor" d={mdiFacebook} />
+        </Icon>
         <Label>Facebook</Label>
-      </Fab>
+      </Button>
       <Separator />
       <div class="row">
         Oder logge dich ein
