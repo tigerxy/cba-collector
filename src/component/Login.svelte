@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { mdiApple, mdiFacebook, mdiGoogle } from "@mdi/js";
+  import { mdiFacebook, mdiGoogle } from "@mdi/js";
   import Button from "@smui/button";
   import { Icon } from "@smui/common";
   import { Svg } from "@smui/common/elements";
@@ -10,31 +10,22 @@
   import * as Realm from "realm-web";
   import { realmUser } from "../store/auth";
 
+  // FIXME: Don't call this every time!
   Realm.handleAuthRedirect();
-
-  const redirectUri = "http://0.0.0.0:5000/";
-
-  const completeLogin = (credentials: Realm.Credentials<any>) => {
-    app.logIn(credentials).then((user: Realm.User) => {
-      realmUser.set(user);
-      console.log(`Successfully loggedin with user ${user.id}`);
-    });
-  };
+  const redirectUri = window.location.toString();
 
   const doLoginWithGoogle = () =>
-    completeLogin(Realm.Credentials.google(redirectUri));
+    realmUser.login(Realm.Credentials.google(redirectUri));
 
   const doLoginWithFacebook = () =>
-    completeLogin(Realm.Credentials.facebook(redirectUri));
+    realmUser.login(Realm.Credentials.facebook(redirectUri));
 
   const doLogin = () =>
-    completeLogin(Realm.Credentials.emailPassword(email, password));
+    realmUser.login(Realm.Credentials.emailPassword(email, password));
 
   let email = "";
   let password = "";
   let invalid = false;
-
-  const app: Realm.App = new Realm.App({ id: "cba-collector-fiqgw" });
 </script>
 
 <div class="login-container">

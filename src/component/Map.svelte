@@ -14,7 +14,7 @@
   gpsPosition.addTo(map);
 
   // TODO: Enable GPS
-  //map.locate({ watch: true, enableHighAccuracy: true });
+  map.locate({ watch: true, enableHighAccuracy: true });
 
   map.on("locationfound", (e) => {
     let radius = e.accuracy / 2;
@@ -26,7 +26,7 @@
   map.on("locationerror", (e) => {
     // TODO: Enable GPS
     //map.locate({ watch: true, enableHighAccuracy: false });
-    //console.error(e.message);
+    console.error(e.message);
   });
 
   setContext("leafletMapInstance", map);

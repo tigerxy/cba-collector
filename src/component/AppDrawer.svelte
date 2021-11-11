@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { H6 } from "@smui/common/elements";
   import Drawer, {
     Content,
     Header,
-    Title,
-    Subtitle,
     Scrim,
+    Subtitle,
+    Title,
   } from "@smui/drawer";
-  import List, { Item, Text, Graphic, Separator, Subheader } from "@smui/list";
-  import { H6 } from "@smui/common/elements";
-  import { logout } from "../store/auth";
+  import List, { Graphic, Item, Separator, Subheader, Text } from "@smui/list";
+  import { realmUser } from "../store/auth";
 
   export let open = false;
   let active = "Inbox";
@@ -16,8 +16,8 @@
     active = value;
     open = false;
   }
-  function logoutAndClose() {
-    logout();
+  async function logoutAndClose() {
+    realmUser.logout();
     open = false;
   }
 </script>
