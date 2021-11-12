@@ -1,0 +1,28 @@
+name: Deploy to MongoDB Realm Hosting
+
+on:
+  push:
+    branches:
+      - v2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      REALM_API_PUBLIC_KEY: ebvndpop
+      REALM_APP_ID: cba-collector-fiqgw
+      REALM_PROJECT_ID: 61871287d50094149c14ba88
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+      - run: npm install
+      - run: npm install -g mongodb-realm-cli
+      - run: npm run build
+      - run: realm-cli login --api-key ${{ env.REALM_API_PUBLIC_KEY }} --private-api-key ${{ secrets.REALM_API_PRIVATE_KEY }}
+      - run: realm-cli pull --remote ${{ env.REALM_APP_ID }} --project ${{ env.REALM_PROJECT_ID }} --local app
+      - run: cp -r ./public/ ./app/hosting/files
+      - run: realm-cli push --remote="${{ env.REALM_APP_ID }}" --project ${{ env.REALM_PROJECT_ID }} --local app --include-hosting -y
