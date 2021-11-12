@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { H6 } from "@smui/common/elements";
   import Drawer, {
     Content,
     Header,
@@ -7,12 +6,13 @@
     Subtitle,
     Title,
   } from "@smui/drawer";
-  import List, { Graphic, Item, Separator, Subheader, Text } from "@smui/list";
+  import List, { Graphic, Item, Separator, Text } from "@smui/list";
+  import type { Page } from "../global";
   import { realmUser } from "../store/auth";
 
   export let open = false;
-  let active = "Inbox";
-  function setActive(value: string) {
+  export let active: Page = "start";
+  function setActive(value: Page) {
     active = value;
     open = false;
   }
@@ -33,62 +33,19 @@
     <List>
       <Item
         href="javascript:void(0)"
-        on:click={() => setActive("Inbox")}
-        activated={active === "Inbox"}
+        on:click={() => setActive("start")}
+        activated={active === "start"}
       >
         <Graphic class="material-icons" aria-hidden="true">inbox</Graphic>
         <Text>Inbox</Text>
       </Item>
       <Item
         href="javascript:void(0)"
-        on:click={() => setActive("Star")}
-        activated={active === "Star"}
+        on:click={() => setActive("areas")}
+        activated={active === "areas"}
       >
         <Graphic class="material-icons" aria-hidden="true">star</Graphic>
         <Text>Star</Text>
-      </Item>
-      <Item
-        href="javascript:void(0)"
-        on:click={() => setActive("Sent Mail")}
-        activated={active === "Sent Mail"}
-      >
-        <Graphic class="material-icons" aria-hidden="true">send</Graphic>
-        <Text>Sent Mail</Text>
-      </Item>
-      <Item
-        href="javascript:void(0)"
-        on:click={() => setActive("Drafts")}
-        activated={active === "Drafts"}
-      >
-        <Graphic class="material-icons" aria-hidden="true">drafts</Graphic>
-        <Text>Drafts</Text>
-      </Item>
-
-      <Separator />
-      <Subheader component={H6}>Labels</Subheader>
-      <Item
-        href="javascript:void(0)"
-        on:click={() => setActive("Family")}
-        activated={active === "Family"}
-      >
-        <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-        <Text>Family</Text>
-      </Item>
-      <Item
-        href="javascript:void(0)"
-        on:click={() => setActive("Friends")}
-        activated={active === "Friends"}
-      >
-        <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-        <Text>Friends</Text>
-      </Item>
-      <Item
-        href="javascript:void(0)"
-        on:click={() => setActive("Work")}
-        activated={active === "Work"}
-      >
-        <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-        <Text>Work</Text>
       </Item>
       <Separator />
       <Item on:click={logoutAndClose}>

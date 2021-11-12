@@ -1,12 +1,14 @@
 <script lang="ts">
+  import "../node_modules/svelte-material-ui/bare.css";
   import AppBar from "./component/AppBar.svelte";
-  import Map from "./component/Map.svelte";
   import AppDrawer from "./component/AppDrawer.svelte";
+  import Areas from "./component/Areas.svelte";
   import Login from "./component/Login.svelte";
+  import Map from "./component/Map.svelte";
+  import type { Page } from "./global";
   import { realmUser } from "./store/auth";
 
-  import "../node_modules/svelte-material-ui/bare.css";
-
+  let active: Page = "start";
   let open = false;
 </script>
 
@@ -28,12 +30,16 @@
   /> -->
 </svelte:head>
 
-<AppDrawer bind:open />
+<AppDrawer bind:open bind:active />
 
 <div class="app-content">
   {#if $realmUser}
     <AppBar bind:open />
-    <Map />
+    {#if active === "start"}
+      <Map />
+    {:else}
+      <Areas />
+    {/if}
   {:else}
     <Login />
   {/if}
