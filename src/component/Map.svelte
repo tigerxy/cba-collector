@@ -2,6 +2,7 @@
   import "../../node_modules/leaflet/dist/leaflet.css";
   import L from "leaflet";
   import { setContext, onMount } from "svelte";
+  import { areas, collectionPoints } from "../store/db";
 
   let mapContainer;
   let map = L.map(L.DomUtil.create("div"), {
@@ -35,6 +36,36 @@
     attribution:
       'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
   }).addTo(map);
+
+  var areasLayer = L.geoJSON().addTo(map);
+  areas.subscribe((areasGeoJSON) =>
+    areasGeoJSON.then((areass) => {
+      console.log(areass);
+      areasLayer.addData(areass);
+    })
+  );
+
+  const geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8,
+  };
+
+  var pointLayer = L.geoJSON().addTo(map);
+  pointLayer.setStyle({
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, geojsonMarkerOptions);
+    },
+  });
+  collectionPoints.subscribe((points) =>
+    points.then((loadedPoints) => {
+      console.log(loadedPoints);
+      pointLayer.addData(loadedPoints);
+    })
+  );
 
   onMount(() => {
     mapContainer.appendChild(map.getContainer());
