@@ -22,9 +22,7 @@
   }
 </script>
 
-<!-- Don't include fixed={false} if this is a page wide drawer.
-        It adds a style for absolute positioning. -->
-<Drawer variant="modal" fixed={false} bind:open>
+<Drawer variant="modal" bind:open>
   <Header>
     <Title>Super Mail</Title>
     <Subtitle>It's the best fake mail app drawer.</Subtitle>
@@ -56,6 +54,4 @@
   </Content>
 </Drawer>
 
-<!-- Don't include fixed={false} if this is a page wide drawer.
-                          It adds a style for absolute positioning. -->
-<Scrim fixed={false} />
+<Scrim />

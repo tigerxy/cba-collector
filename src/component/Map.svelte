@@ -1,8 +1,18 @@
-<script>
-  import "../../node_modules/leaflet/dist/leaflet.css";
+<script lang="ts">
+  import Fab, { Icon } from "@smui/fab";
+  import type { Feature } from "geojson";
   import L from "leaflet";
-  import { setContext, onMount } from "svelte";
+  import { createEventDispatcher, onMount, setContext } from "svelte";
+  import "../../node_modules/leaflet/dist/leaflet.css";
   import { areas, collectionPoints } from "../store/db";
+
+  const dispatch = createEventDispatcher<{
+    areaSelected: Feature;
+    collectingPointSelected: Feature;
+  }>();
+
+  export let foundGPSPosition = false;
+  let followLocation = true;
 
   let mapContainer;
   let map = L.map(L.DomUtil.create("div"), {
@@ -12,23 +22,33 @@
   });
 
   let gpsPosition = L.circle([51, 9], { radius: 1500000 });
-  gpsPosition.addTo(map);
 
-  // TODO: Enable GPS
   map.locate({ watch: true, enableHighAccuracy: true });
 
   map.on("locationfound", (e) => {
-    let radius = e.accuracy / 2;
-
     gpsPosition.setLatLng(e.latlng);
-    gpsPosition.setRadius(radius);
+    gpsPosition.setRadius(e.accuracy / 2);
+    gpsPosition.addTo(map);
+    if (followLocation) {
+      map.flyTo(e.latlng);
+    }
+    foundGPSPosition = true;
   });
 
   map.on("locationerror", (e) => {
     // TODO: Enable GPS
     //map.locate({ watch: true, enableHighAccuracy: false });
     console.error(e.message);
+    gpsPosition.remove();
+    foundGPSPosition = false;
   });
+
+  map.on("movestart", (e) => (followLocation = false));
+
+  const moveToLocation = () => {
+    if (foundGPSPosition) map.flyTo(gpsPosition.getLatLng());
+    followLocation = true;
+  };
 
   setContext("leafletMapInstance", map);
 
@@ -37,29 +57,39 @@
       'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
   }).addTo(map);
 
-  var areasLayer = L.geoJSON().addTo(map);
+  var areasLayer = L.geoJSON(null, {
+    onEachFeature: (feature, layer) => {
+      console.log(layer);
+      layer.addEventListener("click", (e) => {
+        dispatch("areaSelected", e.target.feature);
+      });
+    },
+  }).addTo(map);
   areas.subscribe((areasGeoJSON) =>
     areasGeoJSON.then((areass) => {
-      console.log(areass);
       areasLayer.addData(areass);
     })
   );
 
-  const geojsonMarkerOptions = {
-    radius: 8,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8,
-  };
-
-  var pointLayer = L.geoJSON().addTo(map);
-  pointLayer.setStyle({
-    pointToLayer: function (feature, latlng) {
-      return L.circleMarker(latlng, geojsonMarkerOptions);
-    },
+  const myIcon = L.icon({
+    iconSize: [30, 35],
+    iconAnchor: [15, 35],
+    popupAnchor: [0, -37],
+    iconUrl: "/images/tree_grey.png",
   });
+
+  var pointLayer = L.geoJSON(null, {
+    pointToLayer: (geoJsonPoint, latlng) => {
+      return L.marker(latlng, {
+        icon: myIcon,
+      });
+    },
+    onEachFeature: (feature, layer) => {
+      layer.addEventListener("click", (e) => {
+        dispatch("collectingPointSelected", e.target.feature);
+      });
+    },
+  }).addTo(map);
   collectionPoints.subscribe((points) =>
     points.then((loadedPoints) => {
       console.log(loadedPoints);
@@ -77,11 +107,24 @@
 </script>
 
 <div class="map" bind:this={mapContainer}>
-  <slot />
+  <Fab
+    class="fly-to-button"
+    on:click={moveToLocation}
+    bind:disabled={foundGPSPosition}
+    mini
+  >
+    <Icon class="material-icons">my_location</Icon>
+  </Fab>
 </div>
 
 <style>
   .map {
     flex: 1;
+  }
+  * :global(.fly-to-button) {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1;
   }
 </style>

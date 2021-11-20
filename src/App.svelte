@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Feature } from "geojson";
   import "../node_modules/svelte-material-ui/bare.css";
   import AppBar from "./component/AppBar.svelte";
   import AppDrawer from "./component/AppDrawer.svelte";
@@ -10,6 +11,14 @@
 
   let active: Page = "start";
   let open = false;
+
+  const areaHandler = (area: CustomEvent<Feature>) => {
+    console.log(area.detail);
+  };
+
+  const collectingPointHandler = (collectingPoint: CustomEvent<Feature>) => {
+    console.log(collectingPoint.detail);
+  };
 </script>
 
 <svelte:head>
@@ -36,7 +45,10 @@
   {#if $realmUser}
     <AppBar bind:open />
     {#if active === "start"}
-      <Map />
+      <Map
+        on:areaSelected={areaHandler}
+        on:collectingPointSelected={collectingPointHandler}
+      />
     {:else}
       <Areas />
     {/if}
