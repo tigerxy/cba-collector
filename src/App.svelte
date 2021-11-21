@@ -12,6 +12,8 @@
   let active: Page = "start";
   let open = false;
 
+  window.scrollTo(0,1);
+
   const areaHandler = (area: CustomEvent<Feature>) => {
     console.log(area.detail);
   };

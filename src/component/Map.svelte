@@ -11,7 +11,7 @@
     collectingPointSelected: Feature;
   }>();
 
-  export let foundGPSPosition = false;
+  export let noGPSPosition = false;
   let followLocation = true;
 
   let mapContainer;
@@ -32,7 +32,7 @@
     if (followLocation) {
       map.flyTo(e.latlng);
     }
-    foundGPSPosition = true;
+    noGPSPosition = false;
   });
 
   map.on("locationerror", (e) => {
@@ -40,13 +40,17 @@
     //map.locate({ watch: true, enableHighAccuracy: false });
     console.error(e.message);
     gpsPosition.remove();
-    foundGPSPosition = false;
+    noGPSPosition = true;
   });
 
-  map.on("movestart", (e) => (followLocation = false));
+  map.on("movestart", (e) => {
+    followLocation = false;
+    console.log("movestart");
+  });
 
   const moveToLocation = () => {
-    if (foundGPSPosition) map.flyTo(gpsPosition.getLatLng());
+    console.log("moveToLocation clicked")
+    if (!noGPSPosition) map.flyTo(gpsPosition.getLatLng());
     followLocation = true;
   };
 
@@ -110,8 +114,7 @@
   <Fab
     class="fly-to-button"
     on:click={moveToLocation}
-    bind:disabled={foundGPSPosition}
-    mini
+    exited={noGPSPosition}
   >
     <Icon class="material-icons">my_location</Icon>
   </Fab>
