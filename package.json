@@ -5,11 +5,12 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear --host 0.0.0.0 --http2 --cert cert.pem --key key.pem",
+    "start": "sirv public --no-clear --host 0.0.0.0 --single --http2 --cert cert.pem --key key.pem",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
     "@smui/button": "^5.0.0-beta.8",
@@ -32,9 +33,12 @@
     "@mdi/js": "^6.4.95",
     "@types/geojson": "^7946.0.8",
     "@types/leaflet": "^1.7.5",
+    "emoji-shorts": "^1.1.1",
     "leaflet": "^1.7.1",
     "realm-web": "^1.4.0",
     "sirv-cli": "^1.0.0",
-    "svelte-material-ui": "^5.0.0-beta.8"
+    "svelte-i18n": "^3.3.13",
+    "svelte-material-ui": "^5.0.0-beta.8",
+    "svelte-router-spa": "^6.0.3"
   }
 }

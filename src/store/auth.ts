@@ -1,5 +1,5 @@
 import { App, User } from "realm-web";
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 
 function createRealmUser() {
   const app: App = new App({ id: "cba-collector-fiqgw" });
@@ -8,10 +8,16 @@ function createRealmUser() {
 
   return {
     subscribe,
-    login: (credentials: Realm.Credentials<any>) => {
-      app.logIn(credentials).then((user: User) => {
-        set(user);
-        console.log(`Successfully loggedin with user ${user.id}`);
+    login: (credentials: Realm.Credentials<any>): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        app
+          .logIn(credentials)
+          .then((user: User) => {
+            set(user);
+            console.log(`Successfully loggedin with user ${user.id}`);
+            resolve();
+          })
+          .catch(reject);
       });
     },
     logout: () =>
@@ -25,3 +31,14 @@ function createRealmUser() {
 }
 
 export const realmUser = createRealmUser();
+
+export function getRealmUser() {
+  return get(realmUser);
+}
+
+export function loggedIn() {
+  return getRealmUser() !== null;
+}
+export function loggedOut() {
+  return getRealmUser() === null;
+}

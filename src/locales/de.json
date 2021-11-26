@@ -1,0 +1,15 @@
+{
+  "login": "Anmelden",
+  "page_title": "Seitentitel",
+  "sign_in": "Einloggen",
+  "sign_up": "Anmelden",
+  "password": "Passwort",
+  "password_forgotten": "Passwort zurücksetzen",
+  "register": "Registrieren",
+  "reset_password": "Passwort zurücksetzen",
+  "repeat_password": "Passwort wiederholen",
+  "retry_register": "Registrieren erneut versuchen",
+  "page-not-found": "Seite nicht gefunden",
+  "email": "Email",
+  "logout": "Abmelden"
+}

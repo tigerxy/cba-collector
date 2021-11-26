@@ -1,0 +1,15 @@
+{
+  "page_title": "Page title",
+  "sign_in": "Sign in",
+  "sign_up": "Sign up",
+  "login": "Login",
+  "password": "Passwort",
+  "register": "Register",
+  "password_forgotten": "Reset password",
+  "reset_password": "Reset password",
+  "repeat_password": "Repeat password",
+  "retry_register": "Retry Register",
+  "page-not-found": "Page Not Found",
+  "logout": "Abmelden",
+  "email": "Email"
+}

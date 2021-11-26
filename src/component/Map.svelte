@@ -5,6 +5,7 @@
   import { createEventDispatcher, onMount, setContext } from "svelte";
   import "../../node_modules/leaflet/dist/leaflet.css";
   import { areas, collectionPoints } from "../store/db";
+  import emoji from "emoji-shorts"
 
   const dispatch = createEventDispatcher<{
     areaSelected: Feature;
@@ -49,7 +50,7 @@
   });
 
   const moveToLocation = () => {
-    console.log("moveToLocation clicked")
+    console.log("moveToLocation clicked");
     if (!noGPSPosition) map.flyTo(gpsPosition.getLatLng());
     followLocation = true;
   };
@@ -82,10 +83,18 @@
     iconUrl: "/images/tree_grey.png",
   });
 
+  const emojiIcon = (name: string) => {
+    return L.divIcon({
+      html: emoji.toRich(`:${name}:`),
+      iconSize: [40, 40],
+      className: "emojiMarker",
+    });
+  };
+
   var pointLayer = L.geoJSON(null, {
     pointToLayer: (geoJsonPoint, latlng) => {
       return L.marker(latlng, {
-        icon: myIcon,
+        icon: emojiIcon(geoJsonPoint.properties.id),
       });
     },
     onEachFeature: (feature, layer) => {
@@ -111,11 +120,7 @@
 </script>
 
 <div class="map" bind:this={mapContainer}>
-  <Fab
-    class="fly-to-button"
-    on:click={moveToLocation}
-    exited={noGPSPosition}
-  >
+  <Fab class="fly-to-button" on:click={moveToLocation} exited={noGPSPosition}>
     <Icon class="material-icons">my_location</Icon>
   </Fab>
 </div>
@@ -129,5 +134,8 @@
     bottom: 24px;
     right: 24px;
     z-index: 1;
+  }
+  * :global(.emojiMarker) {
+    font-size: 40px;
   }
 </style>
